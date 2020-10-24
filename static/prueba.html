@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>To-do list</title>
+    <meta charset="UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" type="image/png" href="img/Logo1.png" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+
+<body>
+
+
+  <!-- LOGIN -->
+  <div id="fondo">
+    <div id="login" class="animate__animated animate__bounce"  >
+        <div class="col text-center">
+          <img src="img/todo.png" alt="" style="width: 70%;" >
+        </div>
+        <br><br>
+        <h3 class="text-center">Iniciar Sesión</h3>
+        <form>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    placeholder="Ingresa tu Email">
+                <small id="emailHelp" class="form-text text-muted"></small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="exampleInputPassword1"
+                    placeholder="Ingresa tu Contraseña">
+            </div>
+            <div class="col text-center">
+                <button id="Ingresar" type="button" class="btn btn-primary">Ingresar</button> <br>
+                ¿No tienes una cuenta?
+                <button id="Cuenta" type="button" class="btn btn-link">Crea Una</button>
+            </div>
+
+        </form>
+
+
+    </div>
+<!-- Regitsrar  -->
+    <div id="Registro"style="display: none;" >
+        <div class="col text-center">
+            <img src="img/Logo1.png" alt="">
+            <h3>Crear Cuenta</h3>
+        </div>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputEmail4">Nombre</label>
+                    <input id="nombre" type="text" class="form-control" id="inputEmail4" placeholder="Nombre">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputPassword4">Apellido</label>
+                    <input id="apellido" type="text" class="form-control" id="inputPassword4" placeholder="Apellido"
+                        placeholder="Contraseña">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputAddress">Correo</label>
+                <input type="email" id="email" class="form-control" id="inputAddress" placeholder="Correo">
+            </div>
+            <div class="form-group">
+                <label for="inputAddress2">Contraseña</label>
+                <input type="password" id="password" class="form-control" id="inputAddress2"
+                    placeholder="Contraseña">
+            </div>
+            <div class="form-group">
+                <label for="inputAddress2">Verifica tu contraseña</label>
+                <input type="password" id="verifypass" class="form-control" id="inputAddress2"
+                    placeholder="Contraseña">
+            </div>
+
+            <div class="col text-center">
+                <button id="cancelarCuenta" type="button" class="btn btn-danger">Cancelar</button>
+                <button id="Crear" type="button" class="btn btn-primary">Crear Cuenta</button>
+        
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<script src="js/main.js" type="text/javascript"></Script>
+</body>
+
+</html>
