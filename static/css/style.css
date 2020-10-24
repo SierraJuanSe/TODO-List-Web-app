@@ -27,8 +27,8 @@
     background-color: rgba(255,255,255,.89);
     border-radius: 4px;
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 5%;
+    left: 20%;
     transform: translate(-50%,-50%);
     color: #333;
 }
