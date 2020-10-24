@@ -67,6 +67,12 @@ $("#Ingresar").click(function () {
   
 });
 
+//Boton para habilitar el menu Hamburguesa
+    $('#menu_on').click(function(){
+    	$('body').toggleClass('visible_menu');
+    })
+
+
 function mostrarPaginaPrincipal(){
     
 }
