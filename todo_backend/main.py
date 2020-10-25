@@ -5,3 +5,14 @@ Este controlador utiliza el micro framework flask unicamente para recibir y resp
 
 A pesar de implementar el backend como una API de microservicios, se mantiene la arquitectura MVC y la API solo funciona como controlador entre vista y modelo, que permite tener el front end en arquitectura de single page aplication sin tener que recargar la pagina, forma bastante util para el pryecto de una lista de TODOS.
 """
+from models.user import User
+
+user = User(email = "juan1@gmail.com", password="1234", fname="Juan", lname="sierra")
+
+if user.insert_user() == 1:
+    print(user.count_users())
+    print(user.query_user())
+    print(user.user_id)
+
+else:
+    print('Ya existe')

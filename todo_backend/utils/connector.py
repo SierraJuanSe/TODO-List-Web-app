@@ -11,21 +11,27 @@ from pymongo import MongoClient
 
 
 class Connector:
-   def __init__(self):
-       self.uri = "mongodb+srv://adminuser:admin1234@cluster-todo.uf1xn.mongodb.net/<dbname>?retryWrites=true&w=majority"
-       self.client = MongoClient(self.uri)
+    """ Clase que connecta la base de datos con el modelo"""
+    def __init__(self):
+        """ Inicio de la base de datos con la uri"""
+        self.uri = "mongodb+srv://adminuser:admin1234@cluster-todo.uf1xn.mongodb.net/<dbname>?retryWrites=true&w=majority"
+        self.client = MongoClient(self.uri)
 
-   def get_client(self):
-       return self.client
+    def get_client(self):
+        """ Retorna un cliente de la conexion"""
+        return self.client
 
-   def get_db(self):
-       return self.client['todoapp']
+    def get_db(self):
+        """ retorna la isntancia a la base de datos todoapp"""
+        return self.client['todoapp']
 
-   def get_user_collection(self):
-       return self.client['todoapp'].users
+    def get_user_collection(self):
+        """ retorna la instancia de usuarios de la base de datos"""
+        return self.client['todoapp'].users
 
-   def get_todos_collection(self):
-       return self.client['todoapp'].todos
+    def get_todos_collection(self):
+        """ retorna la isntancia de todos de la base de datos """
+        return self.client['todoapp'].todos
 
 
 
