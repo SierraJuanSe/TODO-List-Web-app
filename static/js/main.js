@@ -68,6 +68,13 @@ $("#Ingresar").click(function () {
 
 });
 
+function mostrarPaginaPrincipal() {
+    $('#fondo').hide(700);
+    $("#fondo").addClass("animate__animated animate__backOutLeft");
+    $("#wrapper").addClass("animate__animated animate__backInRight");
+    $("#wrapper").show();
+}
+
 $("#cerrarsesion").click(function () {
     $("#fondo").removeClass("animate__animated animate__backOutLeft");
     $("#wrapper").removeClass("animate__animated animate__backInRight");
@@ -87,8 +94,7 @@ $("#botonCrearTodo").click(function () {
 });
 
 $("#Creartodo").click(function () {
-    $('#nuevot').
-        titulo = $('#titulo').val();
+    titulo = $('#titulo').val();
     des = $('#Descripcion').val();
     Fecha = $('#fechalimite').val();
     if (titulo == "" || des == "") {
@@ -113,52 +119,54 @@ $("#cancelartodo").click(function () {
 });
 
 
-function mostrarPaginaPrincipal() {
-    $('#fondo').hide(700);
-    $("#fondo").addClass("animate__animated animate__backOutLeft");
-    $("#wrapper").addClass("animate__animated animate__backInRight");
-    $("#wrapper").show();
-}
 
-
-$("#customCheck1").click(function () {
-    if( $(this).is(':checked') ) {
-    idTodo=$(this).parent().parent().parent().parent().parent().parent().attr('id');
-    actualizarTodo(idTodo);
-    $("#tituloN").addClass("tachado");
-    $("#FechaN").addClass("tachado");
-    $("#desN").addClass("tachado");
-    $("#"+idTodo).addClass("animate__animated animate__heartBeat");
-    $(this).attr("disabled", true);
+//Toda la parte de un todo
+$("#customCheckN").click(function () {
+    if ($(this).is(':checked')) {
+        idTodo = $(this).parent().parent().parent().parent().parent().parent().attr('id');
+        actualizarTodo(idTodo);
+        $("#tituloN").addClass("tachado");
+        $("#FechaN").addClass("tachado");
+        $("#desN").addClass("tachado");
+        $("#" + idTodo).addClass("animate__animated animate__heartBeat");
+        $(this).attr("disabled", true);
     }
 });
 
+$("#abrircomentN").click(function () {
+    $("#inComentariosN").show();
+});
+
+$("#cancComentN").click(function () {
+    $("#inComentariosN").hide();
+});
+
+$("#eComentN").click(function () {
+    idTodo = $(this).parent().parent().parent().parent().attr('id');
+    coment = $("#inputcomentarioN").val();
+    if (coment == "") {
+        swal("Error", "Por favor ingresa el comentario", "error");
+    } else {
+        if (crearComentario(idTodo, coment)) {
+            swal("Muy bien", "Create un comentario", "success");
+        } else {
+            swal("Error", "El comentario no fue creado", "error");
+        }
+    }
+});
+
+
 $("#deleteN").click(function () {
-    idTodo=$(this).parent().parent().parent().attr('id');
-    swal({
-        title: "¿Estas seguro de borra el Todo?",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-            if (   BorrarTodo(idTodo)) {
-                swal("To-Do borrado correctamente", {
-                    icon: "success",
-                  });
-             $("#"+idTodo).hide();
-            }else{
-                swal("El To-Do no se pudo borrar", {
-                    icon: "success",
-                  });
+    idTodo = $(this).parent().parent().parent().attr('id');
+    swal({ title: "¿Estas seguro de borra el Todo?", icon: "warning", buttons: true, dangerMode: true, })
+        .then((willDelete) => {
+            if (willDelete) {
+                if (BorrarTodo(idTodo)) {
+                    swal("To-Do borrado correctamente", { icon: "success", });
+                    $("#" + idTodo).hide();
+                } else {
+                    swal("El To-Do no se pudo borrar", { icon: "success", });
+                }
             }
-
-        } 
-      });
-
-
-
-
-    
+        });
 });

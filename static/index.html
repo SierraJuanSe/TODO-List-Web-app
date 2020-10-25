@@ -150,7 +150,9 @@
                 <br>
                 <div id="nuevot">
                     <button type="button" id="botonCrearTodo" class="btn btn-link">
-                        <h3>Crear To-Do</h3>
+                        <h3>
+                            <div class="material-icons">add_circle</div> Crear To-Do
+                        </h3>
                     </button>
 
                 </div>
@@ -177,37 +179,30 @@
                 <div id="Todos">
                     <!-- Aca van todos los Todos -->
 
-                    <div id="to-do_n">
-                        <div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
-                            <div class="card-header">
-
-                                <div class="row">
-                                    <div class="col-1">
+                    <div id="to-do_n"><div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
+                            <div class="card-header"><div class="row"><div class="col-1">
                                         <div class="custom-control custom-checkbox" id="check" style="width: 70%;">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label class="custom-control-label" for="customCheck1"></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-10">
-                                        <h4 id="tituloN"><b> Titulo del To-Do</b></h4>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card-body">
-                                <h4 id="FechaN">Fecha</h4>
-                                <p id="desN" class="card-text">Descripcion del To-Do</p>
-                                <br>
-                                    <div id="deleteN" class=" material-icons puntero">delete</div>
-                                    <div id="commentN" class=" material-icons puntero">comment</div>
-                            </div>
-                        </div>
-                    </div>
+                                            <input type="checkbox" class="custom-control-input" id="customCheckN">
+                                            <label class="custom-control-label" for="customCheckN"></label></div></div>
+                            <div class="col-10"><h4 id="tituloN"><b> Titulo del To-Do</b></h4></div></div></div>
+                            <div class="card-body"><h4 id="FechaN">Fecha</h4>
+                                <p id="desN" class="card-text">Descripcion del To-Do</p><br>
+                                <div id="deleteN" class=" material-icons puntero">delete</div>
+                                <div id="abrircomentN" class=" material-icons puntero">comment</div></div>
+                            <div class="input-group" id="inComentariosN"style="max-width: 45rem;left: 6%; display: none;">
+                                <input ID="inputcomentarioN" type="text" class="form-control" placeholder="Ingresa tu comentario">
+                                <span class="input-group-btn"><button id="eComentN" class="btn btn-light" type="button">
+                                        <div class="material-icons" style>send</div>
+                                        <button id="cancComentN" class="btn btn-light" type="button">
+                                       <div class="material-icons">cancel</div>
+                                        </button></span></div></div> </div>
                 </div>
-
-
-            </section>
         </div>
+    </div>
+
+
+    </section>
+    </div>
     </div>
 
     <!-- final de pagina principal -->
