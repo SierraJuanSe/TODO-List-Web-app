@@ -81,6 +81,7 @@ $('#menu_on').click(function () {
 })
 
 $("#botonCrearTodo").click(function () {
+
     $('#nuevot').hide(700);
     $("#crearT").show(700);
 });
@@ -118,3 +119,46 @@ function mostrarPaginaPrincipal() {
     $("#wrapper").addClass("animate__animated animate__backInRight");
     $("#wrapper").show();
 }
+
+
+$("#customCheck1").click(function () {
+    if( $(this).is(':checked') ) {
+    idTodo=$(this).parent().parent().parent().parent().parent().parent().attr('id');
+    actualizarTodo(idTodo);
+    $("#tituloN").addClass("tachado");
+    $("#FechaN").addClass("tachado");
+    $("#desN").addClass("tachado");
+    $("#"+idTodo).addClass("animate__animated animate__heartBeat");
+    $(this).attr("disabled", true);
+    }
+});
+
+$("#deleteN").click(function () {
+    idTodo=$(this).parent().parent().parent().attr('id');
+    swal({
+        title: "¿Estas seguro de borra el Todo?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+            if (   BorrarTodo(idTodo)) {
+                swal("To-Do borrado correctamente", {
+                    icon: "success",
+                  });
+             $("#"+idTodo).hide();
+            }else{
+                swal("El To-Do no se pudo borrar", {
+                    icon: "success",
+                  });
+            }
+
+        } 
+      });
+
+
+
+
+    
+});

@@ -18,6 +18,6 @@ function BorrarTodo(codigoTodo) {
     return true;
 }
 
-function actualizarTOdo() {
+function actualizarTodo(idTodo) {
     return true;
 }

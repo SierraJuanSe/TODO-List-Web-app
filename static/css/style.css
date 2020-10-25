@@ -99,9 +99,9 @@ nav{
 	overflow-y: auto;
 }
 
-/* .visible_menu{
-	position: fixed;
-} */
+.tachado {
+    text-decoration: line-through;
+}
 
 .visible_menu nav{
 	left: 0;
@@ -122,6 +122,10 @@ nav a{
 nav a:hover{
 	color: rgba(0, 0, 0, 0.39);
 	border-bottom-color:rgba(255,255,255,0.4);
+}
+
+.puntero{
+cursor: pointer;
 }
 
 /* Contenido de la pagina */
@@ -160,10 +164,6 @@ input,
 label {
     margin: .4rem 0;
 }
-
-
-
-
 
 
 

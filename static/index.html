@@ -129,13 +129,13 @@
                             </div>
                         </li>
                         <br>
-                        <li><a href="#">
+                        <li id="bandejaEntrada"><a href="#">
                                 <div class="material-icons">all_inbox</div> Bandeja de Entrada
                             </a></li>
-                        <li><a href="#">
+                        <li id="seccionTodo"><a href="#">
                                 <div class="material-icons">folder</div> Mis To-Do
                             </a></li>
-                        <li><a href="#">
+                        <li id="etiquetas"><a href="#">
                                 <div class="material-icons">confirmation_number</div> Etiquetas
                             </a></li>
                         <li id="cerrarsesion"><a href="#">
@@ -149,14 +149,13 @@
                 <h1>Bandeja de Entrada</h1>
                 <br>
                 <div id="nuevot">
-                    <button type="button" id="botonCrearTodo" class="btn btn-link"><h3>Crear To-Do</h3></button>
+                    <button type="button" id="botonCrearTodo" class="btn btn-link">
+                        <h3>Crear To-Do</h3>
+                    </button>
 
                 </div>
-                <div id="Todos">
-
-                </div>
-                <div class="card todo" id="crearT" style="display: none;">
-                    <h4>Crear To-Do</h4>
+                <div class="card todo " id="crearT" style="display: none;">
+                    <h5>Crear To-Do</h5>
                     <div class="card-body">
                         <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
                         <br>
@@ -174,6 +173,38 @@
                     </div>
                     <br>
                 </div>
+                <br>
+                <div id="Todos">
+                    <!-- Aca van todos los Todos -->
+
+                    <div id="to-do_n">
+                        <div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
+                            <div class="card-header">
+
+                                <div class="row">
+                                    <div class="col-1">
+                                        <div class="custom-control custom-checkbox" id="check" style="width: 70%;">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                            <label class="custom-control-label" for="customCheck1"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-10">
+                                        <h4 id="tituloN"><b> Titulo del To-Do</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <h4 id="FechaN">Fecha</h4>
+                                <p id="desN" class="card-text">Descripcion del To-Do</p>
+                                <br>
+                                    <div id="deleteN" class=" material-icons puntero">delete</div>
+                                    <div id="commentN" class=" material-icons puntero">comment</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </section>
         </div>
