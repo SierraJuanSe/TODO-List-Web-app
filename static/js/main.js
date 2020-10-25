@@ -92,8 +92,9 @@ $("#botonCrearTodo").click(function () {
     $('#nuevot').hide(700);
     $("#crearT").show(700);
 });
-
+id = 0;
 $("#Creartodo").click(function () {
+    id += 1;
     titulo = $('#titulo').val();
     des = $('#Descripcion').val();
     Fecha = $('#fechalimite').val();
@@ -105,6 +106,7 @@ $("#Creartodo").click(function () {
                 .then((value) => {
                     $('#nuevot').show(700);
                     $("#crearT").hide(700);
+                    pintarTODO(id, titulo, Fecha, des)
                 });
 
         } else {
@@ -170,3 +172,81 @@ $("#deleteN").click(function () {
             }
         });
 });
+
+
+// Toda la parte de dear funciones a los botones de cada TODO
+function pintarTODO(id, Titulo, Fecha, Descripcion) {
+    TODO = "";
+    TODO = '<div id="' + id + '"><div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">' +
+        '<div class="card-header"><div class="row"><div class="col-1"><div class="custom-control custom-checkbox" id="check" style="width: 70%;">' +
+        '<input type="checkbox" class="custom-control-input" id="customCheck' + id + '"><label class="custom-control-label" for="customCheck' + id + '"></label></div></div>' +
+        '<div class="col-10"><h4 id="tituloN"><b>' + Titulo + '</b></h4></div></div></div><div class="card-body"><h4 id="Fecha' + id + '">' + Fecha + '</h4>' +
+        '<p id="des' + id + '" class="card-text">' + Descripcion + '</p><br>     <div id="delete' + id + '" class=" material-icons puntero">delete</div>' +
+        '<div id="abrircoment' + id + '" class=" material-icons puntero">comment</div></div>' +
+        '<div class="input-group" id="inComentarios' + id + '"style="max-width: 45rem;left: 6%; display: none;">' +
+        '<input ID="inputcomentario' + id + '" type="text" class="form-control" placeholder="Ingresa tu comentario">' +
+        '<span class="input-group-btn"><button id="eComent' + id + '" class="btn btn-light" type="button">' +
+        '<div class="material-icons" style>send</div><button id="cancComent' + id + '" class="btn btn-light" type="button">' +
+        '<div class="material-icons">cancel</div></button></span></div></div> </div>';
+    $("#Todos").append(TODO);
+    checkbox(id);
+    abrirCancelarComment(id);
+    botonBorrar(id);
+    botoncrearComentario(id);
+}
+
+function checkbox(id) {
+    $("#customCheck" + id).click(function () {
+        if ($(this).is(':checked')) {
+            actualizarTodo(id);
+            $("#titulo" + id).addClass("tachado");
+            $("#Fecha" + id).addClass("tachado");
+            $("#des" + id).addClass("tachado");
+            $("#" + id).addClass("animate__animated animate__heartBeat");
+            $(this).attr("disabled", true);
+        }
+    });
+}
+function abrirCancelarComment(id) {
+    $("#abrircoment" + id).click(function () {
+        $("#inComentarios" + id).show();
+    });
+
+    $("#cancComent" + id).click(function () {
+        $("#inComentarios" + id).hide();
+    });
+}
+
+
+function botoncrearComentario(id) {
+$("#eComent"+id).click(function () {
+    coment = $("#inputcomentario"+id).val();
+    if (coment == "") {
+        swal("Error", "Por favor ingresa el comentario", "error");
+    } else {
+        if (crearComentario(id, coment)) {
+            swal("Muy bien", "Create un comentario", "success");
+            $("#inputcomentario"+id).val("");
+        } else {
+            swal("Error", "El comentario no fue creado", "error");
+        }
+    }
+});
+}
+
+
+function botonBorrar(id) {
+    $("#delete"+id).click(function () {
+        swal({ title: "¿Estas seguro de borra el Todo?", icon: "warning", buttons: true, dangerMode: true, })
+            .then((willDelete) => {
+                if (willDelete) {
+                    if (BorrarTodo(id)) {
+                        swal("To-Do borrado correctamente", { icon: "success", });
+                        $("#" + id).hide();
+                    } else {
+                        swal("El To-Do no se pudo borrar", { icon: "error", });
+                    }
+                }
+            });
+    });
+}
