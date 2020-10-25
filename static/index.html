@@ -20,7 +20,7 @@
 
 
     <!-- LOGIN -->
-    <div id="fondo" style="display: none;">
+    <div id="fondo">
         <div id="login" class="animate__animated animate__bounce">
             <div class="col text-center">
                 <img src="img/todo.png" alt="" style="width: 70%;">
@@ -96,8 +96,8 @@
     </div>
 
     <!-- inicio de pagina principal-->
-    <div id="menu">
-        <div id="wrapper">
+    <div id="menu" >
+        <div id="wrapper" style="display:none">
             <section>
                 <header id="#header">
                     <div class="row">
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 </header>
-                <nav>
+                <nav >
                     <ul>
                         <li class="col text-center">
                             <img src="img/user.png" alt="" width="40%">
@@ -179,23 +179,51 @@
                 <div id="Todos">
                     <!-- Aca van todos los Todos -->
 
-                    <!-- <div id="to-do_n"><div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
-                            <div class="card-header"><div class="row"><div class="col-1">
+                    <!-- <div id="to-do_n">
+                        <div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-1">
                                         <div class="custom-control custom-checkbox" id="check" style="width: 70%;">
                                             <input type="checkbox" class="custom-control-input" id="customCheckN">
-                                            <label class="custom-control-label" for="customCheckN"></label></div></div>
-                            <div class="col-10"><h4 id="tituloN"><b> Titulo del To-Do</b></h4></div></div></div>
-                            <div class="card-body"><h4 id="FechaN">Fecha</h4>
+                                            <label class="custom-control-label" for="customCheckN"></label></div>
+                                    </div>
+                                    <div class="col-10">
+                                        <h4 id="tituloN"><b> Titulo del To-Do</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h4 id="FechaN">Fecha</h4>
                                 <p id="desN" class="card-text">Descripcion del To-Do</p><br>
                                 <div id="deleteN" class=" material-icons puntero">delete</div>
-                                <div id="abrircomentN" class=" material-icons puntero">comment</div></div>
-                            <div class="input-group" id="inComentariosN"style="max-width: 45rem;left: 6%; display: none;">
-                                <input ID="inputcomentarioN" type="text" class="form-control" placeholder="Ingresa tu comentario">
+                                <div id="abrircomentN" class=" material-icons puntero">comment</div>
+                            </div>
+
+
+
+                            <div class="input-group" id="inComentariosN"
+                                style="max-width: 45rem;left: 6%; display: none;">
+                                <input ID="inputcomentarioN" type="text" class="form-control"
+                                    placeholder="Ingresa tu comentario">
                                 <span class="input-group-btn"><button id="eComentN" class="btn btn-light" type="button">
                                         <div class="material-icons" style>send</div>
                                         <button id="cancComentN" class="btn btn-light" type="button">
-                                       <div class="material-icons">cancel</div>
-                                        </button></span></div></div> </div> -->
+                                            <div class="material-icons">cancel</div>
+                                        </button></span></div>
+                        </div> -->
+                        <!-- <div id="ComentariosNss">
+                            <div class="card" style="width: 30rem;left:15%;display: none;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Comentario</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the bulk of the card's content.</p>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <!-- fin de un todo -->
                 </div>
         </div>
     </div>

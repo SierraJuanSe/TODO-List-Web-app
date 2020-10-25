@@ -106,7 +106,8 @@ $("#Creartodo").click(function () {
                 .then((value) => {
                     $('#nuevot').show(700);
                     $("#crearT").hide(700);
-                    pintarTODO(id, titulo, Fecha, des)
+                    pruebaComents={"0":{"c":'Comentario1'},"1":{"c":'Comentario2'},"2":{"c":'Comentario3'}};
+                    pintarTODO(id, titulo, Fecha, des,pruebaComents);
                 });
 
         } else {
@@ -175,19 +176,24 @@ $("#deleteN").click(function () {
 
 
 // Toda la parte de dear funciones a los botones de cada TODO
-function pintarTODO(id, Titulo, Fecha, Descripcion) {
+function pintarTODO(id, Titulo, Fecha, Descripcion,comentarios) {
+    com="";
+    for (var i in comentarios) {
+        com+='<div class="card" style="width: 30rem;left:15%;">'+
+        '<div class="card-body"><b class="card-title">Comentario</b><p class="card-text">'+comentarios[i].c+'</p></div></div>';
+    }
     TODO = "";
     TODO = '<div id="' + id + '"><div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">' +
         '<div class="card-header"><div class="row"><div class="col-1"><div class="custom-control custom-checkbox" id="check" style="width: 70%;">' +
         '<input type="checkbox" class="custom-control-input" id="customCheck' + id + '"><label class="custom-control-label" for="customCheck' + id + '"></label></div></div>' +
-        '<div class="col-10"><h4 id="tituloN"><b>' + Titulo + '</b></h4></div></div></div><div class="card-body"><h4 id="Fecha' + id + '">' + Fecha + '</h4>' +
+        '<div class="col-10"><h4 id="titulo"><b>' + Titulo + '</b></h4></div></div></div><div class="card-body"><h4 id="Fecha' + id + '">' + Fecha + '</h4>' +
         '<p id="des' + id + '" class="card-text">' + Descripcion + '</p><br>     <div id="delete' + id + '" class=" material-icons puntero">delete</div>' +
         '<div id="abrircoment' + id + '" class=" material-icons puntero">comment</div></div>' +
         '<div class="input-group" id="inComentarios' + id + '"style="max-width: 45rem;left: 6%; display: none;">' +
-        '<input ID="inputcomentario' + id + '" type="text" class="form-control" placeholder="Ingresa tu comentario">' +
+        '<input ID="inputcomentario' + id + '" type="text" class="form-control" placeholder="Ingresa tu comentario"><br>' +
         '<span class="input-group-btn"><button id="eComent' + id + '" class="btn btn-light" type="button">' +
         '<div class="material-icons" style>send</div><button id="cancComent' + id + '" class="btn btn-light" type="button">' +
-        '<div class="material-icons">cancel</div></button></span></div></div> </div>';
+        '<div class="material-icons">cancel</div></button></span></div></div><div id="Comentarios'+id+'" style="display:none;">'+com+'</div></div><br>';
     $("#Todos").append(TODO);
     checkbox(id);
     abrirCancelarComment(id);
@@ -207,9 +213,18 @@ function checkbox(id) {
         }
     });
 }
+señal=false;
 function abrirCancelarComment(id) {
     $("#abrircoment" + id).click(function () {
-        $("#inComentarios" + id).show();
+        if (señal==false) {
+            $("#inComentarios" + id).show();
+            $("#Comentarios" + id).show();
+            señal=true;
+        }else{
+            $("#Comentarios" + id).hide();
+            señal=false;
+        }
+
     });
 
     $("#cancComent" + id).click(function () {
@@ -250,3 +265,4 @@ function botonBorrar(id) {
             });
     });
 }
+
