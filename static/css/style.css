@@ -126,15 +126,14 @@ nav a:hover{
 
 /* Contenido de la pagina */
 #Contenido{
-    padding:250px 8%;
+    padding:100px 8%;
     background-color: rgba(87, 86, 86, 0.116);
-	text-align: left;
+	text-align: center;
 	height: 100vh;
 	position: relative;
 	display: table;
 	width: 100%;
 	transition: all 0.75s ease;
-    overflow-x: hidden;
 }
 
 body{
@@ -143,7 +142,23 @@ body{
 
 /* Mueve el menu al seleccionar hamburguesa */
 .visible_menu #Contenido{
-transform: translateX(260px);
+transform: translateX(160px);
+}
+
+.todo{
+	width: 80%;
+	left: 10%;
+	
+}
+
+label {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+    margin: .4rem 0;
 }
 
 

@@ -95,54 +95,91 @@
         </div>
     </div>
 
-    <!-- inicio -->
-    <div id="wrapper">
-        <section>
-            <header id="#header">
-                <div class="row">
-                    <div class="col">
-                        <a href="#" id="menu_on">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </a>
-                    </div>
-                    <div class="col-4">
-                        <img src="img/Titulo.png" alt="" width="30%" height="100%">
-                    </div>
-                    <div class="col-6">
-                    </div>
-                    <div class="col">
-                        <div class="material-icons">
-                            notifications
+    <!-- inicio de pagina principal-->
+    <div id="menu">
+        <div id="wrapper">
+            <section>
+                <header id="#header">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" id="menu_on">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <img src="img/Titulo.png" alt="" width="30%" height="100%">
+                        </div>
+                        <div class="col-6">
+                        </div>
+                        <div class="col">
+                            <div class="material-icons">
+                                notifications
+                            </div>
                         </div>
                     </div>
-                </div>
-            </header>
-            <nav>
-                <ul>
-                    <li class="col text-center">
-                        <img src="img/user.png" alt="" width="40%">
-                        <div>
-                            <h2>Nombre</h2>
-                        </div>
-                    </li>
-                    <br>
-                    <li><a href="#"> <div class="material-icons">all_inbox</div> Bandeja de Entrada</a></li>
-                    <li><a href="#"><div class="material-icons">folder</div> Mis To-Do</a></li>
-                    <li><a href="#"><div class="material-icons">confirmation_number</div> Etiquetas</a></li>
-                    <li><a href="#" ><div class="material-icons">login</div>Cerrar sesión</a></li>
-                </ul>
-            </nav>
-        </section>
+                </header>
+                <nav>
+                    <ul>
+                        <li class="col text-center">
+                            <img src="img/user.png" alt="" width="40%">
+                            <div>
+                                <h2>Nombre</h2>
+                            </div>
+                        </li>
+                        <br>
+                        <li><a href="#">
+                                <div class="material-icons">all_inbox</div> Bandeja de Entrada
+                            </a></li>
+                        <li><a href="#">
+                                <div class="material-icons">folder</div> Mis To-Do
+                            </a></li>
+                        <li><a href="#">
+                                <div class="material-icons">confirmation_number</div> Etiquetas
+                            </a></li>
+                        <li id="cerrarsesion"><a href="#">
+                                <div class="material-icons">login</div>Cerrar sesión
+                            </a></li>
+                    </ul>
+                </nav>
+            </section>
 
-        <section id="Contenido">
-            <h1><b>Contenido de mi web<b></h1>
-        </section>
+            <section id="Contenido">
+                <h1>Bandeja de Entrada</h1>
+                <br>
+                <div id="nuevot">
+                    <button type="button" id="botonCrearTodo" class="btn btn-link"><h3>Crear To-Do</h3></button>
+
+                </div>
+                <div id="Todos">
+
+                </div>
+                <div class="card todo" id="crearT" style="display: none;">
+                    <h4>Crear To-Do</h4>
+                    <div class="card-body">
+                        <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
+                        <br>
+                        <textarea class="form-control " id="Descripcion" placeholder="Descripcion del To-do"
+                            required></textarea>
+                        <br>
+                        <label for="start">Fecha:</label>
+
+                        <input type="date" id="fechalimite" name="trip-start" value="2020-10-29" min="2020-10-25"
+                            max="3000-12-31">
+                    </div>
+                    <div class="col text-center">
+                        <button id="cancelartodo" type="button" class="btn btn-danger">Cancelar</button>
+                        <button id="Creartodo" type="button" class="btn btn-primary">Crear Todo</button>
+                    </div>
+                    <br>
+                </div>
+
+            </section>
+        </div>
     </div>
 
-
-    <!-- final -->
+    <!-- final de pagina principal -->
 
 
 
