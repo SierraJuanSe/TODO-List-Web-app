@@ -99,7 +99,7 @@ class User:
         return True if update_result.acknowledged else False
         
 
-    def delet_user(self):
+    def delete_user(self):
         """ Elimina el usuario de la base de datos """
         conn = Connector()
         users = conn.get_user_collection()

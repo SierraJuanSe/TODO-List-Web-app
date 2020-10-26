@@ -20,7 +20,7 @@ else:
     user2 = User(user_id = user.user_id, lname='sierra', password='newpass2')
     if user2.update_user():
         print('Actualizado' + str(user2.user_id))
-        if user2.delet_user():
+        if user2.delete_user()
             print('Usuario eliminado')
         else:
             print('No se elimino ningun usuario')
