@@ -26,27 +26,33 @@ $("#CrearCuenta").click(function () {
     contraseña1 = $("#verifypass").val();
     //Verifica la contraseña
     if (contraseña == contraseña1) {
-        cor = crearCuenta(nombre, apellido, correo, contraseña);
-        if (cor == true) {
-            //alerta correcta
-            swal("Cuenta creada correctamente", "Estas listo para administrar tus tareas", "success")
-                .then((value) => {
-                    // Animacion de creacion de usuario
-                    $("#Registro").removeClass("animate__animated animate__backInRight");
-                    $("#login").removeClass("animate__backOutLeft");
-                    $("#Registro").addClass("animate__animated animate__backOutRight");
-                    $("#login").addClass("animate__animated animate__backInLeft");
-                });
-            //alerta incorrecta
-        } else {
-            swal("Error", "Revisa si ingrsaste los datos correctamente", "error");
-        }
+       envioCuenta(nombre, apellido, correo, contraseña);
     } else {
         //alerta incorrecta
         swal("Error", "Verificacion de contraseña incorrecto", "error");
     }
 });
 
+function envioCuenta(nombre, apellido, correo, contraseña) {
+
+    if (crearCuenta(nombre, apellido, correo, contraseña)) {
+        //alerta correcta
+        swal("Cuenta creada correctamente", "Estas listo para administrar tus tareas", "success")
+            .then((value) => {
+                // Animacion de creacion de usuario
+                $("#Registro").removeClass("animate__animated animate__backInRight");
+                $("#login").removeClass("animate__backOutLeft");
+                $("#Registro").addClass("animate__animated animate__backOutRight");
+                $("#login").addClass("animate__animated animate__backInLeft");
+            });
+        //alerta incorrecta
+    } else {
+        swal("Error", "Revisa si ingrsaste los datos correctamente", "error");
+    }
+}
+
+
+//soo llamar aogin
 $("#Ingresar").click(function () {
     $("#alertaLogin").empty(); //vacia el div de alertas
     //Lectura de datos
@@ -92,12 +98,17 @@ $("#botonCrearTodo").click(function () {
     $('#nuevot').hide(700);
     $("#crearT").show(700);
 });
+
 id = 0;
 $("#Creartodo").click(function () {
     id += 1;
     titulo = $('#titulo').val();
     des = $('#Descripcion').val();
     Fecha = $('#fechalimite').val();
+    enviarTODO(titulo, des, Fecha);
+});
+
+function enviarTODO(titulo, des, Fecha) {
     if (titulo == "" || des == "") {
         swal("Error", "Ingresas todos los datos", "error");
     } else {
@@ -114,7 +125,7 @@ $("#Creartodo").click(function () {
             swal("Error", "Revisa si ingrsaste los datos correctamente", "error");
         }
     }
-});
+}
 
 $("#cancelartodo").click(function () {
     $('#nuevot').show(700);
@@ -124,76 +135,77 @@ $("#cancelartodo").click(function () {
 
 
 //Toda la parte de un todo
-$("#customCheckN").click(function () {
-    if ($(this).is(':checked')) {
-        idTodo = $(this).parent().parent().parent().parent().parent().parent().attr('id');
-        actualizarTodo(idTodo);
-        $("#tituloN").addClass("tachado");
-        $("#FechaN").addClass("tachado");
-        $("#desN").addClass("tachado");
-        $("#" + idTodo).addClass("animate__animated animate__heartBeat");
-        $(this).attr("disabled", true);
-    }
-});
+// $("#customCheckN").click(function () {
+//     if ($(this).is(':checked')) {
+//         idTodo = $(this).parent().parent().parent().parent().parent().parent().attr('id');
+//         actualizarTodo(idTodo);
+//         $("#tituloN").addClass("tachado");
+//         $("#FechaN").addClass("tachado");
+//         $("#desN").addClass("tachado");
+//         $("#" + idTodo).addClass("animate__animated animate__heartBeat");
+//         $(this).attr("disabled", true);
+//     }
+// });
 
-$("#abrircomentN").click(function () {
-    $("#inComentariosN").show();
-});
+// $("#abrircomentN").click(function () {
+//     $("#inComentariosN").show();
+// });
 
-$("#cancComentN").click(function () {
-    $("#inComentariosN").hide();
-});
+// $("#cancComentN").click(function () {
+//     $("#inComentariosN").hide();
+// });
 
-$("#eComentN").click(function () {
-    idTodo = $(this).parent().parent().parent().parent().attr('id');
-    coment = $("#inputcomentarioN").val();
-    if (coment == "") {
-        swal("Error", "Por favor ingresa el comentario", "error");
-    } else {
-        if (crearComentario(idTodo, coment)) {
-            swal("Muy bien", "Create un comentario", "success");
-        } else {
-            swal("Error", "El comentario no fue creado", "error");
-        }
-    }
-});
+// $("#eComentN").click(function () {
+//     idTodo = $(this).parent().parent().parent().parent().attr('id');
+//     coment = $("#inputcomentarioN").val();
+//     if (coment == "") {
+//         swal("Error", "Por favor ingresa el comentario", "error");
+//     } else {
+//         if (crearComentario(idTodo, coment)) {
+//             swal("Muy bien", "Create un comentario", "success");
+//         } else {
+//             swal("Error", "El comentario no fue creado", "error");
+//         }
+//     }
+// });
 
 
-$("#deleteN").click(function () {
-    idTodo = $(this).parent().parent().parent().attr('id');
-    swal({ title: "¿Estas seguro de borra el Todo?", icon: "warning", buttons: true, dangerMode: true, })
-        .then((willDelete) => {
-            if (willDelete) {
-                if (BorrarTodo(idTodo)) {
-                    swal("To-Do borrado correctamente", { icon: "success", });
-                    $("#" + idTodo).hide();
-                } else {
-                    swal("El To-Do no se pudo borrar", { icon: "success", });
-                }
-            }
-        });
-});
+// $("#deleteN").click(function () {
+//     idTodo = $(this).parent().parent().parent().attr('id');
+//     swal({ title: "¿Estas seguro de borra el Todo?", icon: "warning", buttons: true, dangerMode: true, })
+//         .then((willDelete) => {
+//             if (willDelete) {
+//                 if (BorrarTodo(idTodo)) {
+//                     swal("To-Do borrado correctamente", { icon: "success", });
+//                     $("#" + idTodo).hide();
+//                 } else {
+//                     swal("El To-Do no se pudo borrar", { icon: "success", });
+//                 }
+//             }
+//         });
+// });
 
 
 // Toda la parte de dear funciones a los botones de cada TODO
 function pintarTODO(id, Titulo, Fecha, Descripcion,comentarios) {
     com="";
     for (var i in comentarios) {
-        com+='<div class="card" style="width: 30rem;left:15%;">'+
+        com+='<div class="card" style="width: 45rem;left:18%;">'+
         '<div class="card-body"><b class="card-title">Comentario</b><p class="card-text">'+comentarios[i].c+'</p></div></div>';
     }
+
     TODO = "";
     TODO = '<div id="' + id + '"><div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">' +
         '<div class="card-header"><div class="row"><div class="col-1"><div class="custom-control custom-checkbox" id="check" style="width: 70%;">' +
         '<input type="checkbox" class="custom-control-input" id="customCheck' + id + '"><label class="custom-control-label" for="customCheck' + id + '"></label></div></div>' +
-        '<div class="col-10"><h4 id="titulo"><b>' + Titulo + '</b></h4></div></div></div><div class="card-body"><h4 id="Fecha' + id + '">' + Fecha + '</h4>' +
-        '<p id="des' + id + '" class="card-text">' + Descripcion + '</p><br>     <div id="delete' + id + '" class=" material-icons puntero">delete</div>' +
-        '<div id="abrircoment' + id + '" class=" material-icons puntero">comment</div></div>' +
-        '<div class="input-group" id="inComentarios' + id + '"style="max-width: 45rem;left: 6%; display: none;">' +
+        '<div class="col-10"><h4 id="titulo'+id+'"><b>' + Titulo + '</b></h4></div></div></div><div class="card-body"><h6 id="des' + id + '">' + Descripcion + '</h6>' +
+        '<div class="row" ><div class="col" ></div><div class="col-8" ><p id="Fecha' + id + '" class="card-text">' + Fecha + '</p> </div><div class="col-2" ><div id="delete' + id + '" class=" material-icons puntero">delete</div>' +
+        '<div id="abrircoment' + id + '" class=" material-icons puntero">comment</div></div></div></div>' +
+        '<div class="input-group" id="inComentarios' + id + '"style="max-width: 47rem;left: 6%; display: none;">' +
         '<input ID="inputcomentario' + id + '" type="text" class="form-control" placeholder="Ingresa tu comentario"><br>' +
-        '<span class="input-group-btn"><button id="eComent' + id + '" class="btn btn-light" type="button">' +
+        '<div class="input-group-btn"><button id="eComent' + id + '" class="btn btn-light" type="button">' +
         '<div class="material-icons" style>send</div><button id="cancComent' + id + '" class="btn btn-light" type="button">' +
-        '<div class="material-icons">cancel</div></button></span></div></div><div id="Comentarios'+id+'" style="display:none;">'+com+'</div></div><br>';
+        '<div class="material-icons">cancel</div></button></div></div></div><div id="Comentarios'+id+'" style="display:none;">'+com+'</div></div><br>';
     $("#Todos").append(TODO);
     checkbox(id);
     abrirCancelarComment(id);
@@ -265,4 +277,5 @@ function botonBorrar(id) {
             });
     });
 }
+
 

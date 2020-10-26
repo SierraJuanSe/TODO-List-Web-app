@@ -26,6 +26,6 @@ function crearComentario(idTodo, coment) {
     return true;
 }
 
-function consutarComentarios(){
-return 0;
+function pintarNombre(nombre){
+
 }
