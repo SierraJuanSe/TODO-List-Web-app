@@ -7,6 +7,7 @@ from utils.connector import Connector
 class Todo:
     """ Modelo TODO conectado a la base de datos """
     def __init__(self, todo_id=None, title=None, description=None, create_date=None, end_date=None, status=0, owner_id=None):
+        """Init del modelo todo"""
         self.todo_id = todo_id
         self.title = title
         self.description = description
@@ -17,18 +18,21 @@ class Todo:
 
 
     def count_my_todos(self):
+        """ Retorna la cantidad de todos de un usuario """
         conn = Connector()
         todos = conn.get_todos_collection()
         return todos.count_documents({"owner_id":self.owner_id})
 
 
     def query_all_my_todos(self):
+        """ Retorna todos los todos de un usario """
         conn = Connector()
         todos = conn.get_todos_collection()
         return todos.find({"owner_id":self.owner_id})
 
 
     def query_todo(self):
+        """ Retorna el todo consultado en caso de que exista """
         conn = Connector()
         todos = conn.get_todos_collection()
         data = todos.find({"owner_id":self.owner_id, "_id":self.todo_id})
@@ -46,17 +50,41 @@ class Todo:
             return False
 
     def insert_todo(Self):
-        
+        """Inserta un nuevo todo creado por un usuario """
+        conn = Connector()
+        todos = conn.get_todos_collection()
+
+        insert_result = todos.insert_one({
+            "title":self.title,
+            "description":self.description,
+            "create_date":self.create_date,
+            "end_date":self.end_date,
+            "status":self.status,
+            "owner_id":self.owner_id
+            })
+        if insert_result.acknowledged:
+            self.todo_id = insert_result.inserted_id
+            return 1
+        else:
+            return 0
 
     def update_todo(self):
-        pass
+        """ Actualiza la informacion de un TODO """
+        conn = Connector()
+        todos = conn.get_todos_collection()
+
 
 
     def delete_todo(self):
-        pass
+        """ Elimina un TODO """
+        conn = Connector()
+        todos = conn.get_todos_collection()
+
 
 
     def change_status_todo(self):
-        pass
+        """ Cambia el estatus de un TODO a terminado o a sin terminar """
+        conn = Connector()
+        todos = conn.get_todos_collection()
 
 
