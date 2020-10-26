@@ -215,16 +215,36 @@ function pintarTODO(id, Titulo, Fecha, Descripcion,comentarios) {
 
 function checkbox(id) {
     $("#customCheck" + id).click(function () {
-        if ($(this).is(':checked')) {
-            actualizarTodo(id);
-            $("#titulo" + id).addClass("tachado");
-            $("#Fecha" + id).addClass("tachado");
-            $("#des" + id).addClass("tachado");
-            $("#" + id).addClass("animate__animated animate__heartBeat");
-            $(this).attr("disabled", true);
-        }
+      accionesCheck(id);
     });
 }
+
+
+function accionesCheck(id) {
+    if ($("#customCheck" + id).is(':checked')) {
+        if (actualizarTodo(id,true)){
+        $("#titulo" + id).addClass("tachado");
+        $("#Fecha" + id).addClass("tachado");
+        $("#des" + id).addClass("tachado");
+        $("#" + id).addClass("animate__animated animate__heartBeat");
+        }else{
+            $("#customCheck" + id).prop("checked", false);  
+            swal("Error", "No se pudo actualizar a realizado", "error");
+        }
+    }else{
+        if(actualizarTodo(id,false)){
+        $("#titulo" + id).removeClass("tachado");
+        $("#Fecha" + id).removeClass("tachado");
+        $("#des" + id).removeClass("tachado");
+        }else{
+            $("#customCheck" + id).prop("checked", true);  
+            swal("Error", "No se pudo actualizar a no realizado", "error");
+        }
+    }
+}
+
+
+
 señal=false;
 function abrirCancelarComment(id) {
     $("#abrircoment" + id).click(function () {

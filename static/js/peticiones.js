@@ -18,7 +18,7 @@ function BorrarTodo(codigoTodo) {
     return true;
 }
 
-function actualizarTodo(idTodo) {
+function actualizarTodo(idTodo,estado) {
     return true;
 }
 
