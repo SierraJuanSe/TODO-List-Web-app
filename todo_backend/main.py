@@ -11,9 +11,21 @@ user = User(email = "juan3@gmail.com", password="1234", fname="Sebastian", lname
 
 if user.insert_user() == 1:
     print(user.count_users())
-    print(user.query_user())
+    print(user.login_user())
     print(user.user_id)
 
 else:
     print('Ya existe')
     print(user.user_id)
+    user2 = User(user_id = user.user_id, lname='sierra', password='newpass2')
+    if user2.update_user():
+        print('Actualizado' + str(user2.user_id))
+        if user2.delet_user():
+            print('Usuario eliminado')
+        else:
+            print('No se elimino ningun usuario')
+
+    else:
+        print('no se actualizo error')
+
+

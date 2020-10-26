@@ -6,7 +6,7 @@ from utils.connector import Connector
 class User:
     """Modelo Usuario connectado a la base de datos"""
 
-    def __init__(self, user_id="", email="", fname="", lname="", password=""):
+    def __init__(self, user_id=None, email=None, fname=None, lname=None, password=None):
         """ init del modelo usuario"""
         self.user_id = user_id
         self.email = email
@@ -34,6 +34,20 @@ class User:
         """ Consulta un usuario por correo y contrasena y actualiza los datos de la instancia """
         conn = Connector()
         users = conn.get_user_collection()
+        data = users.find_one({"email": self.email}, {"email":1, "fname":1, "lname":1})
+        if data:
+            self.user_id = data["_id"]
+            self.email = data['email']
+            self.fname = data['fname']
+            self.lname = data['lname']
+            return True
+        else:
+            return False
+
+    def login_user(self):
+        """ Consulta un usuario por correo y contrasena y actualiza los datos de la instancia """
+        conn = Connector()
+        users = conn.get_user_collection()
         data = users.find_one({"email": self.email, "password": self.password}, {"email":1, "fname":1, "lname":1})
         if data:
             self.user_id = data["_id"]
@@ -43,6 +57,7 @@ class User:
             return True
         else:
             return False
+
 
 
     def insert_user(self):
@@ -67,17 +82,30 @@ class User:
             return -1
 
 
+    def update_user(self):
+        """" Actualiza la informacion de un usuario """
+        conn = Connector()
+        users = conn.get_user_collection()
+        new_data = {}
+        if self.fname:
+            new_data["fname"] = self.fname
+        if self.lname:
+            new_data["lname"] = self.lname
+        if self.password:
+            new_data["password"] = self.password
 
 
-
-
-
-
-
-if __name__ == '__main__':
-    user = User()
-    print(user.count_users)
-
+        update_result = users.update_one({"_id":self.user_id}, {"$set": new_data})
+        return True if update_result.acknowledged else False
         
+
+    def delet_user(self):
+        """ Elimina el usuario de la base de datos """
+        conn = Connector()
+        users = conn.get_user_collection()
+        delete_result = users.delete_one({"_id":self.user_id})
+        return True if delete_result else False
+
+
 
 
