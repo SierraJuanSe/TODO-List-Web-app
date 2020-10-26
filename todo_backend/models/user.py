@@ -36,6 +36,7 @@ class User:
         users = conn.get_user_collection()
         data = users.find_one({"email": self.email, "password": self.password}, {"email":1, "fname":1, "lname":1})
         if data:
+            self.user_id = data["_id"]
             self.email = data['email']
             self.fname = data['fname']
             self.lname = data['lname']

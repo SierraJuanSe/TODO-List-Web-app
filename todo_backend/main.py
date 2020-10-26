@@ -7,7 +7,7 @@ A pesar de implementar el backend como una API de microservicios, se mantiene la
 """
 from models.user import User
 
-user = User(email = "juan1@gmail.com", password="1234", fname="Juan", lname="sierra")
+user = User(email = "juan3@gmail.com", password="1234", fname="Sebastian", lname="sier")
 
 if user.insert_user() == 1:
     print(user.count_users())
@@ -16,3 +16,4 @@ if user.insert_user() == 1:
 
 else:
     print('Ya existe')
+    print(user.user_id)
