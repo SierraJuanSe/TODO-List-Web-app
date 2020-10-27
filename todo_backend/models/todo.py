@@ -49,7 +49,7 @@ class Todo:
         else:
             return False
 
-    def insert_todo(Self):
+    def insert_todo(self):
         """Inserta un nuevo todo creado por un usuario """
         conn = Connector()
         todos = conn.get_todos_collection()
