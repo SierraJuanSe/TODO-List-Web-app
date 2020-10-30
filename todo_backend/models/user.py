@@ -13,10 +13,9 @@ class User:
         self.fname = fname
         self.lname = lname
         self.password = password
-        self.todos = []
 
 
-    def count_users(self):
+    def count_users(self): q
         """ Cuenta el numero de usuario almacenados """
         conn = Connector()
         users = conn.get_user_collection()
@@ -31,7 +30,7 @@ class User:
 
 
     def query_user(self):
-        """ Consulta un usuario por correo y contrasena y actualiza los datos de la instancia """
+        """ Consulta un usuario por correo y actualiza los datos de la instancia """
         conn = Connector()
         users = conn.get_user_collection()
         data = users.find_one({"email": self.email}, {"email":1, "fname":1, "lname":1})
@@ -43,6 +42,7 @@ class User:
             return True
         else:
             return False
+
 
     def login_user(self):
         """ Consulta un usuario por correo y contrasena y actualiza los datos de la instancia """
@@ -71,7 +71,6 @@ class User:
                 "fname":self.fname,
                 "lname":self.lname,
                 "password":self.password,
-                "todos":self.todos
                 })
             if insert_result.acknowledged:
                 self.user_id = insert_result.inserted_id
