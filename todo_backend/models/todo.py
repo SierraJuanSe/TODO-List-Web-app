@@ -6,7 +6,7 @@ from utils.connector import Connector
 
 class Todo:
     """ Modelo TODO conectado a la base de datos """
-    def __init__(self, todo_id=None, title=None, description=None, create_date=None, end_date=None, status=0, owner_id=None):
+    def __init__(self, todo_id=None, title=None, description=None, create_date=None, end_date=None, status=False, owner_id=None):
         """Init del modelo todo"""
         self.todo_id = todo_id
         self.title = title
@@ -35,7 +35,7 @@ class Todo:
         """ Retorna el todo consultado en caso de que exista """
         conn = Connector()
         todos = conn.get_todos_collection()
-        data = todos.find({"owner_id":self.owner_id, "_id":self.todo_id})
+        data = todos.find_one({"owner_id":self.owner_id, "_id":self.todo_id})
         
         if data:
             self.id = data["_id"]
@@ -79,6 +79,8 @@ class Todo:
         """ Elimina un TODO """
         conn = Connector()
         todos = conn.get_todos_collection()
+        delete_result = todos.delete_one({"_id":self.todo_id})
+        return True if delete_result else False
 
 
 
@@ -86,5 +88,8 @@ class Todo:
         """ Cambia el estatus de un TODO a terminado o a sin terminar """
         conn = Connector()
         todos = conn.get_todos_collection()
+        new_data = {"status":self.status}
+        update_result = todos.update_one({"_id":self.todo_id}, {"$set":new_data})
+        return True if update_result.acknowledged else False
 
 
