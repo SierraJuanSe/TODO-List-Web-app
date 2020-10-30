@@ -5,6 +5,26 @@ Este controlador utiliza el micro framework flask unicamente para recibir y resp
 
 A pesar de implementar el backend como una API de microservicios, se mantiene la arquitectura MVC y la API solo funciona como controlador entre vista y modelo, que permite tener el front end en arquitectura de single page aplication sin tener que recargar la pagina, forma bastante util para el pryecto de una lista de TODOS.
 """
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+
 from models.user import User
 from models.todo import Todo
 
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/')
+def index():
+    return 'Rest API for TODO list web app'
+
+@app.route('/user', methods=['POST'])
+def user_register():
+    req_data = request.get_json()
+    print(req_data)
+    
+    return jsonify(status=200)
+
+
+if __name__ == '__main__':
+    app.run()
