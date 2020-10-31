@@ -99,9 +99,10 @@ function mostrarPaginaPrincipal() {
 }
 
 $("#cerrarsesion").click(function () {
-
-    $("#wrapper").hide(700);
-    $('#fondo').show(700);
+    // $("#Todos").empty();
+    location.reload();
+    // $("#wrapper").hide(700);
+    // $('#fondo').show(700);
 });
 
 //Boton para habilitar el menu Hamburguesa
@@ -155,10 +156,15 @@ $("#cancelartodo").click(function () {
     $("#crearT").hide(700);
 });
 
+$("#seccionTodo").click(function () {
+consultarTodo();
+});
+
 
 function traerTodos(todos) {
+    $("#Todos").empty();
     for (const todo of todos) {
-        pintarTODO(todo['_id'],todo['title'],todo['end_date'],todo['description'],[],true);
+        pintarTODO(todo['_id'],todo['title'],todo['end_date'],todo['description'],[],todo['status']);
     }
 }
 
@@ -202,11 +208,12 @@ function checkbox(id,estado) {
 }
 
 
-function accionesCheck(id) {
+async function accionesCheck(id) {
 
 
     if ($("#customCheck" + id).is(':checked')) {
-        if (actualizarTodo(id, true)) {
+        var result= await actualizarTodo(id, true); 
+        if (result) {
             $("#titulo" + id).addClass("tachado");
             $("#Fecha" + id).addClass("tachado");
             $("#des" + id).addClass("tachado");
@@ -216,7 +223,8 @@ function accionesCheck(id) {
             swal("Error", "No se pudo actualizar a realizado", "error");
         }
     } else {
-        if (actualizarTodo(id, false)) {
+        var result= await actualizarTodo(id, false); 
+        if (result) {
             $("#titulo" + id).removeClass("tachado");
             $("#Fecha" + id).removeClass("tachado");
             $("#des" + id).removeClass("tachado");
@@ -271,12 +279,12 @@ function botoncrearComentario(id) {
 
 
 function botonBorrar(id) {
-    $("#delete" + id).click(function () {
+    $("#delete" + id).click( function () {
         swal({ title: "¿Estas seguro de borra el Todo?", icon: "warning", buttons: true, dangerMode: true, })
-            .then((willDelete) => {
+            .then( async (willDelete) => {
                 if (willDelete) {
-                    if (BorrarTodo(id)) {
-                        swal("To-Do borrado correctamente", { icon: "success", });
+                    var result= await BorrarTodo(id);
+                    if (result) {
                         $("#" + id).hide();
                     } else {
                         swal("El To-Do no se pudo borrar", { icon: "error", });

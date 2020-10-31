@@ -114,12 +114,55 @@ function prueba(params) {
     
 }
 
-function BorrarTodo(codigoTodo) {
-    return true;
+async function BorrarTodo(codigoTodo) {
+    data={
+        "todo_id": codigoTodo,
+    }
+    try {
+        result = await $.ajax({
+            url: url + "/todo",
+            data: JSON.stringify(data),
+            type: "DELETE",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            headers : {"userid" : readCookie('token')}
+        })
+        if (result.status == 200) {
+            return 1
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        console.log(result)
+        return 0;
+    }
 }
 
-function actualizarTodo(idTodo, estado) {
-    return true;
+async function actualizarTodo(idTodo, estado) {
+    data={
+        "todo_id": idTodo,
+        "todo_status": estado
+    }
+    try {
+        result = await $.ajax({
+            url: url + "/todo",
+            data: JSON.stringify(data),
+            type: "PUT",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            headers : {"userid" : readCookie('token')}
+        })
+        if (result.status == 200) {
+            return 1
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        console.log(result)
+        return 0;
+    }
+
+
 }
 
 function crearComentario(idTodo, coment) {
