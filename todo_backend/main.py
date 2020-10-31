@@ -31,7 +31,7 @@ def user_login():
 
         login_result = user.login_user()
         if login_result:
-            data = {'user_id': str(
+            data = {'userid': str(
                 user.user_id), 'email': user.email, 'fname': user.fname, 'lname': user.lname}
             return jsonify(status=200, status_message='User found', data=data)
         else:
@@ -66,18 +66,18 @@ def todo_controller():
 
     if request.method == 'POST':
         # Creacion y almecenamiento de un nuevo todo
-        user_id = request.headers['user_id']
+        userid = request.headers['userid']
         req_data = request.get_json()
         newTodo = Todo(
             title=req_data['title'],
             description=req_data['description'],
             create_date=dateformat(req_data['create_date']),
             end_date=dateformat(req_data['end_date']),
-            owner_id=user_id)
+            owner_id=userid)
 
         insert_result = newTodo.insert_todo()
         if insert_result:
-            data = {'user_id': str(newTodo.owner_id),
+            data = {'userid': str(newTodo.owner_id),
                     'todo_id': str(newTodo.todo_id)}
             return jsonify(status=201, status_message='todo created', data=data), 201
         else:
@@ -85,24 +85,24 @@ def todo_controller():
 
     elif request.method == 'GET':
         # Consulta yu retorno de los todos del usuario
-        user_id = request.headers['user_id']
-        todos = Todo(owner_id=user_id)
+        userid = request.headers['userid']
+        todos = Todo(owner_id=userid)
 
         mytodos = list_todos_format(todos.query_all_my_todos())
         data = {
-            'info': {'user_id': todos.owner_id, 'total': len(mytodos)},
+            'info': {'userid': todos.owner_id, 'total': len(mytodos)},
             'todos': mytodos}
         return jsonify(status=200, status_message='todos returned', data=data)
 
     elif request.method == 'PUT':
         # Actualizacion de los datos del todo o del estado
-        user_id = request.headers['user_id']
+        userid = request.headers['userid']
         req_data = request.get_json()
         todo = Todo(todo_id=ObjectId(
-            req_data['todo_id']), owner_id=user_id, status=req_data['todo_status'])
+            req_data['todo_id']), owner_id=userid, status=req_data['todo_status'])
         update_result = todo.change_status_todo()
         if update_result:
-            data = {'info': {'user_id': todo.owner_id,
+            data = {'info': {'userid': todo.owner_id,
                              'todo_id': str(todo.todo_id)}}
             return jsonify(status=200, status_message='todo status updated', data=data)
         else:
@@ -110,14 +110,14 @@ def todo_controller():
 
     elif request.method == 'DELETE':
         # Eliminacion de un todo
-        user_id = request.headers['user_id']
+        userid = request.headers['userid']
         req_data = request.get_json()
         todo = Todo(todo_id=ObjectId(
-            req_data['todo_id']), owner_id=user_id)
+            req_data['todo_id']), owner_id=userid)
 
         delete_result = todo.delete_todo()
         if delete_result:
-            data = {'info': {'user_id': todo.owner_id,
+            data = {'info': {'userid': todo.owner_id,
                              'todo_id': str(todo.todo_id)}}
             return jsonify(status=200, status_message='todo deleted', data=data)
         else:
