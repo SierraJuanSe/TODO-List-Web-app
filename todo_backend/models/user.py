@@ -15,7 +15,7 @@ class User:
         self.password = password
 
 
-    def count_users(self): q
+    def count_users(self):
         """ Cuenta el numero de usuario almacenados """
         conn = Connector()
         users = conn.get_user_collection()
@@ -42,7 +42,6 @@ class User:
             return True
         else:
             return False
-
 
     def login_user(self):
         """ Consulta un usuario por correo y contrasena y actualiza los datos de la instancia """

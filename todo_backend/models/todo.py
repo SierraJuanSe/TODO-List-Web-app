@@ -79,8 +79,8 @@ class Todo:
         """ Elimina un TODO """
         conn = Connector()
         todos = conn.get_todos_collection()
-        delete_result = todos.delete_one({"_id":self.todo_id})
-        return True if delete_result else False
+        delete_result = todos.delete_one({"_id":self.todo_id, 'owner_id':self.owner_id})
+        return True if delete_result.deleted_count else False
 
 
 
