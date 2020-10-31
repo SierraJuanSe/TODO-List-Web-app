@@ -37,9 +37,9 @@ $("#CrearCuenta").click(function () {
     }
 });
 
-function envioCuenta(nombre, apellido, correo, contraseña) {
-
-    if (crearCuenta(nombre, apellido, correo, contraseña)) {
+async function envioCuenta(nombre, apellido, correo, contraseña) {
+    var envio= await crearCuenta(nombre, apellido, correo, contraseña)
+    if (envio==1) {
         //alerta correcta
         swal("Cuenta creada correctamente", "Estas listo para administrar tus tareas", "success")
             .then((value) => {
@@ -50,9 +50,13 @@ function envioCuenta(nombre, apellido, correo, contraseña) {
                 $("#login").addClass("animate__animated animate__backInLeft");
             });
         //alerta incorrecta
-    } else {
-        swal("Error", "Revisa si ingrsaste los datos correctamente", "error");
+    } else if (envio==0) {
+        swal("Error", "Revisa si ingresaste los datos correctamente", "error");
+    }else{
+        swal("Error", "Ya existe una cuenta con el correo ingresado", "error");
     }
+       
+    
 }
 
 
@@ -79,19 +83,9 @@ $("#Ingresar").click(function () {
 
 });
 
-$('#bandejaEntrada').click(function () {
-
-})
-
-$('#seccionTodo').click(function () {
-    
-})
-
-
 
 function mostrarPaginaPrincipal() {
     $('#fondo').hide();
-
     $("#wrapper").show();
 }
 
