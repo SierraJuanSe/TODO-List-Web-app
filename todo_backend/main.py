@@ -71,8 +71,8 @@ def todo_controller():
         newTodo = Todo(
             title=req_data['title'],
             description=req_data['description'],
-            create_date=dateformat(req_data['create_date']),
-            end_date=dateformat(req_data['end_date']),
+            create_date=req_data['create_date'],
+            end_date=req_data['end_date'],
             owner_id=userid)
 
         insert_result = newTodo.insert_todo()
