@@ -96,7 +96,7 @@
     </div>
 
     <!-- inicio de pagina principal-->
-    <div id="menu" >
+    <div id="menu">
         <div id="wrapper" style="display:none">
             <section>
                 <header id="#header">
@@ -109,7 +109,7 @@
                             </a>
                         </div>
                         <div class="col-4">
-                            <img src="img/Titulo.png" alt="" width="30%" height="100%">
+                            <img src="img/Titulo.png" alt="" width="31%" height="100%">
                         </div>
                         <div class="col-6">
                         </div>
@@ -120,7 +120,7 @@
                         </div>
                     </div>
                 </header>
-                <nav >
+                <nav>
                     <ul>
                         <li class="col text-center">
                             <img src="img/user.png" alt="" width="40%">
@@ -148,6 +148,7 @@
             <section id="Contenido">
                 <h1>Bandeja de Entrada</h1>
                 <br>
+                
                 <div id="nuevot">
                     <button type="button" id="botonCrearTodo" class="btn btn-link">
                         <h3>
@@ -156,7 +157,8 @@
                     </button>
 
                 </div>
-                <div class="card todo " id="crearT" style="display: none;">
+                <div class="card todo bg-light" id="crearT" style="display: none;">
+                    <br>
                     <h5>Crear To-Do</h5>
                     <div class="card-body">
                         <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
@@ -164,17 +166,26 @@
                         <textarea class="form-control " id="Descripcion" placeholder="Descripcion del To-do"
                             required></textarea>
                         <br>
-                        <label for="start">Fecha:</label>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="start">Fecha:</label>
 
-                        <input type="date" id="fechalimite" name="trip-start" value="2020-10-29" min="2020-10-25"
-                            max="3000-12-31">
+                                <input type="date" id="fechalimite" name="trip-start" value="2020-10-29" min="2020-10-25"
+                                    max="3000-12-31">
+                            </div>
+                            <div class="col-3">
+                                <button id="Creartodo" type="button" class="btn btn-primary">Crear Todo</button>   
+                                <button id="cancelartodo" type="button" class="btn btn-danger">Cancelar</button> 
+                            </div>
+                        </div>
+
                     </div>
                     <div class="col text-center">
-                        <button id="cancelartodo" type="button" class="btn btn-danger">Cancelar</button>
-                        <button id="Creartodo" type="button" class="btn btn-primary">Crear Todo</button>
+
                     </div>
                     <br>
                 </div>
+
                 <br>
                 <div id="Todos">
                     <!-- Aca van todos los Todos -->
@@ -212,7 +223,7 @@
                                             <div class="material-icons">cancel</div>
                                         </button></span></div>
                         </div> -->
-                        <!-- <div id="ComentariosNss">
+                    <!-- <div id="ComentariosNss">
                             <div class="card" style="width: 30rem;left:15%;display: none;">
                                 <div class="card-body">
                                     <h5 class="card-title">Comentario</h5>
@@ -221,11 +232,11 @@
                                 </div>
                             </div>
                         </div> -->
-                    </div>
-
-                    <!-- fin de un todo -->
                 </div>
+
+                <!-- fin de un todo -->
         </div>
+    </div>
     </div>
 
 

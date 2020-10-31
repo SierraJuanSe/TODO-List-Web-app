@@ -38,7 +38,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 
 header{
-	background: #007bc2;
+	background: #0003d1;
 	position: fixed;
 	width: 100%;
 	padding: 20px;
@@ -92,7 +92,7 @@ nav{
 	width: 300px;
 	z-index: 1;
 	padding: 90px 30px 30px;
-	background: #007bc2;
+	background:  #0003d1;
 	opacity: 0;
 	transition: all 0.75s ease;
 	font-size: 1.2em;
@@ -151,6 +151,7 @@ transform: translateX(160px);
 
 .todo{
 	width: 80%;
+	top: 30%;
 	left: 10%;
 	
 }
@@ -164,8 +165,3 @@ input,
 label {
     margin: .4rem 0;
 }
-
-
-
-
-
