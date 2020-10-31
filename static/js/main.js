@@ -1,5 +1,3 @@
-var d = new Date();
-fecha = (d.getFullYear() + "/" + (d.getMonth() + 1) + "/" + d.getDate());
 // $("#wrapper").hide();
 $("#Cuenta").click(function () {
     // Animacion para mostrara el regiitro:
@@ -29,7 +27,7 @@ $("#CrearCuenta").click(function () {
     //Verifica la contraseña
     if (contraseña == contraseña1 && correo.includes('@')) {
         envioCuenta(nombre, apellido, correo, contraseña);
-    }else if (!correo.includes('@')) {
+    } else if (!correo.includes('@')) {
         swal("Error", "Correo incorrecto", "error");
     } else {
         //alerta incorrecta
@@ -38,8 +36,8 @@ $("#CrearCuenta").click(function () {
 });
 
 async function envioCuenta(nombre, apellido, correo, contraseña) {
-    var envio= await crearCuenta(nombre, apellido, correo, contraseña)
-    if (envio==1) {
+    var envio = await crearCuenta(nombre, apellido, correo, contraseña)
+    if (envio == 1) {
         //alerta correcta
         swal("Cuenta creada correctamente", "Estas listo para administrar tus tareas", "success")
             .then((value) => {
@@ -50,13 +48,13 @@ async function envioCuenta(nombre, apellido, correo, contraseña) {
                 $("#login").addClass("animate__animated animate__backInLeft");
             });
         //alerta incorrecta
-    } else if (envio==0) {
+    } else if (envio == 0) {
         swal("Error", "Revisa si ingresaste los datos correctamente", "error");
-    }else{
+    } else {
         swal("Error", "Ya existe una cuenta con el correo ingresado", "error");
     }
-       
-    
+
+
 }
 
 
@@ -71,17 +69,28 @@ $("#Ingresar").click(function () {
         $("#alertaLogin").append('<div class="alert alert-danger" role="alert">Error, por favor ingresa todo los datos</div>')
 
     } else {
-        //Invoca a metodo de peticion
-        if (login(correo, contraseña)) {
-            consultarTodo();
-            mostrarPaginaPrincipal();
-        } else {
-            //Envio de alerta
-            $("#alertaLogin").append('<div class="alert alert-danger" role="alert">Error, intentalo nuevamente</div>')
-        }
+        enviarLogin(correo, contraseña)
     }
 
 });
+
+async function enviarLogin(correo, contraseña) {
+    //Invoca a metodo de peticion
+    var result = await login(correo, contraseña);
+    if (result) {
+        consultarTodo();
+        mostrarPaginaPrincipal();
+        pintarNombre(result.nombre, result.apellido);
+    } else {
+        //Envio de alerta
+        $("#alertaLogin").append('<div class="alert alert-danger" role="alert">Error, intentalo nuevamente</div>')
+    }
+}
+
+function pintarNombre(nombre, apellido) {
+    $("#nombreUser").empty();
+    $("#nombreUser").append('<h3>' + nombre + ' ' + apellido + '</h3>')
+}
 
 
 function mostrarPaginaPrincipal() {
@@ -111,28 +120,31 @@ $("#Creartodo").click(function () {
     titulo = $('#titulo').val();
     des = $('#Descripcion').val();
     Fecha = $('#fechalimite').val();
-    if(enviarTODO(titulo, des, Fecha)){
+    // alert(JSON.stringify({ "fecha": Fecha }));
+    if (enviarTODO(titulo, des, Fecha)) {
         titulo = $('#titulo').val("");
         des = $('#Descripcion').val("");
         Fecha = $('#fechalimite').val("");
     }
-    
+
 });
 
-function enviarTODO(titulo, des, Fecha) {
+async function enviarTODO(titulo, des, Fecha) {
     if (titulo == "") {
         swal("Error", "Ingresas todos los datos", "error");
     } else {
-        if (crearTodo(titulo, des, Fecha, true)) {
-
+        var d = new Date();
+        FechaCreacion = (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
+        var result = await crearTodo(titulo, des, Fecha,FechaCreacion);
+        if (result) {
             $('#nuevot').show(700);
             $("#crearT").hide(700);
             pruebaComents = { "0": { "c": 'Comentario1' }, "1": { "c": 'Comentario2' }, "2": { "c": 'Comentario3' } };
-            pintarTODO(id, titulo, Fecha, des, pruebaComents);
+            pintarTODO(result.idTodo, titulo, Fecha, des, pruebaComents);
             return true
 
         } else {
-            swal("Error", "Revisa si ingrsaste los datos correctamente", "error");
+            swal("Error", "Revisa si ingresaste los datos correctamente", "error");
             return false
         }
     }
@@ -144,14 +156,20 @@ $("#cancelartodo").click(function () {
 });
 
 
+function traerTodos(todos) {
+    for (const todo of todos) {
+        pintarTODO(todo['_id'],todo['title'],todo['end_date'],todo['description'],[],true);
+    }
+}
+
 // Toda la parte de dear funciones a los botones de cada TODO
-function pintarTODO(id, Titulo, Fecha, Descripcion, comentarios) {
+function pintarTODO(id, Titulo, Fecha, Descripcion, comentarios,estado) {
+    
     com = "";
     for (var i in comentarios) {
         com += '<div class="card" style="width: 45rem;left:18%;">' +
-            '<div class="card-body"><b class="card-title">Comentario <div id="deleteComent"'+id+' class="material-icons float-right">delete</div>  </b><p class="card-text">' + comentarios[i].c + '</p></div></div>';
+            '<div class="card-body"><b class="card-title">Comentario <div id="deleteComent"' + id + ' class="material-icons float-right">delete</div>  </b><p class="card-text">' + comentarios[i].c + '</p></div></div>';
     }
-
     TODO = "";
     TODO = '<div id="' + id + '"><div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">' +
         '<div class="card-header"><div class="row"><div class="col-1"><div class="custom-control custom-checkbox" id="check" style="width: 70%;">' +
@@ -165,20 +183,28 @@ function pintarTODO(id, Titulo, Fecha, Descripcion, comentarios) {
         '<div class="material-icons" style>send</div><button id="cancComent' + id + '" class="btn btn-light" type="button">' +
         '<div class="material-icons">cancel</div></button></div></div></div><div id="Comentarios' + id + '" style="display:none;">' + com + '</div></div><br>';
     $("#Todos").append(TODO);
-    checkbox(id);
+    checkbox(id,estado);
     abrirCancelarComment(id);
     botonBorrar(id);
     botoncrearComentario(id);
 }
 
-function checkbox(id) {
+function checkbox(id,estado) {
     $("#customCheck" + id).click(function () {
-        accionesCheck(id);
+        accionesCheck(id,estado);
     });
+    if (estado) {
+        $("#customCheck" + id).prop("checked", true);
+        $("#titulo" + id).addClass("tachado");
+        $("#Fecha" + id).addClass("tachado");
+        $("#des" + id).addClass("tachado");
+    }
 }
 
 
 function accionesCheck(id) {
+
+
     if ($("#customCheck" + id).is(':checked')) {
         if (actualizarTodo(id, true)) {
             $("#titulo" + id).addClass("tachado");
