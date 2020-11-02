@@ -25,6 +25,7 @@ $("#CrearCuenta").click(function () {
     contraseña = $("#password").val();
     contraseña1 = $("#verifypass").val();
     //Verifica la contraseña
+if (nombre && apellido && correo && contraseña) {
     if (contraseña == contraseña1 && correo.includes('@')) {
         envioCuenta(nombre, apellido, correo, contraseña);
     } else if (!correo.includes('@')) {
@@ -33,6 +34,9 @@ $("#CrearCuenta").click(function () {
         //alerta incorrecta
         swal("Error", "Verificacion de contraseña incorrecto", "error");
     }
+} else {
+    swal("Error", "verifica si ingresaste todos los datos", "error");
+}
 });
 
 async function envioCuenta(nombre, apellido, correo, contraseña) {
