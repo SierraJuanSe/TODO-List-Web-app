@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>To-do list</title>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="icon" type="image/png" href="img/Logo1.png" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+    
+
+    <!-- LOGIN -->
+    <div id="fondo">
+        <div id="login" class="animate__animated animate__bounce">
+            <div class="col text-center">
+                <img src="img/todo.png" alt="" style="width: 70%;">
+            </div>
+            <br><br>
+            <h3 class="text-center">Iniciar Sesión</h3>
+            <form>
+                <div class="form-group">
+                    <label for="emailLogin">Email</label>
+                    <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp"
+                        placeholder="Ingresa tu Email">
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+                <div class="form-group">
+                    <label for="passwordLogin">Contraseña</label>
+                    <input type="password" class="form-control" id="passwordLogin" placeholder="Ingresa tu Contraseña">
+                </div>
+                <div id="alertaLogin">
+
+                </div>
+                <div class="col text-center">
+                    <button id="Ingresar" type="button" class="btn btn-primary">Ingresar</button> <br>
+                    ¿No tienes una cuenta?
+                    <button id="Cuenta" type="button" class="btn btn-link">Crea Una</button>
+                </div>
+
+            </form>
+
+
+        </div>
+        <!-- Regitsrar  -->
+        <div id="Registro" style="display: none;">
+            <div class="col text-center">
+                <img src="img/Logo1.png" alt="">
+                <h3>Crear Cuenta</h3>
+            </div>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Nombre</label>
+                        <input id="nombre" type="text" class="form-control" id="inputEmail4" placeholder="Nombre">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">Apellido</label>
+                        <input id="apellido" type="text" class="form-control" id="inputPassword4" placeholder="Apellido"
+                            placeholder="Contraseña">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputAddress">Correo</label>
+                    <input type="email" id="email" class="form-control" id="inputAddress" placeholder="Correo">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress2">Contraseña</label>
+                    <input type="password" id="password" class="form-control" id="inputAddress2"
+                        placeholder="Contraseña">
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress2">Verifica tu contraseña</label>
+                    <input type="password" id="verifypass" class="form-control" id="inputAddress2"
+                        placeholder="Contraseña">
+                </div>
+
+                <div class="col text-center">
+                    <button id="cancelarCuenta" type="button" class="btn btn-danger">Cancelar</button>
+                    <button id="CrearCuenta" type="button" class="btn btn-primary">Crear Cuenta</button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- inicio de pagina principal-->
+    <div id="menu">
+        <div id="wrapper" style="display:none">
+            <section>
+                <header id="#header">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" id="menu_on">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </a>
+                        </div>
+                        <div class="col-4">
+                            <img src="img/Titulo.png" alt="" width="31%" height="100%">
+                        </div>
+                        <div class="col-6">
+                        </div>
+                        <div class="col">
+                            <div class="material-icons">
+                                notifications
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <nav>
+                    <ul>
+                        <li class="col text-center">
+                            <img src="img/user.png" alt="" width="40%">
+                            <div id="nombreUser">
+                                
+                            </div>
+                        </li>
+                        <br>
+
+                        <li id="seccionTodo"><a href="#">
+                                <div class="material-icons">folder</div> Mis To-Do
+                            </a></li>
+
+                        <li id="cerrarsesion"><a href="#">
+                                <div class="material-icons">login</div>Cerrar sesión
+                            </a></li>
+                    </ul>
+                </nav>
+            </section>
+
+            <section id="Contenido">
+                <h1>Mis To-Do</To-Do></h1>
+                <br>
+                
+                <div id="nuevot">
+                    <button type="button" id="botonCrearTodo" class="btn btn-link">
+                        <h3>
+                            <div class="material-icons">add_circle</div> Crear To-Do
+                        </h3>
+                    </button>
+
+                </div>
+                <div class="card todo bg-light" id="crearT" style="display: none;">
+                    <br>
+                    <h5>Crear To-Do</h5>
+                    <div class="card-body">
+                        <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
+                        <br>
+                        <textarea class="form-control " id="Descripcion" placeholder="Descripcion del To-do"
+                            required></textarea>
+                        <br>
+                        <div class="row">
+                            <div class="col-4">
+                                <label for="start">Fecha:</label>
+
+                                <input type="date" id="fechalimite" name="trip-start" value="2020-10-29" min="2020-10-25"
+                                    max="3000-12-31">
+                            </div>
+                            <div class="col-3">
+                                <button id="Creartodo" type="button" class="btn btn-primary">Crear Todo</button>   
+                                <button id="cancelartodo" type="button" class="btn btn-danger">Cancelar</button> 
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col text-center">
+
+                    </div>
+                    <br>
+                </div>
+
+                <br>
+                <div id="Todos">
+                    <!-- Aca van todos los Todos -->
+
+                    <!-- <div id="to-do_n">
+                        <div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <div class="custom-control custom-checkbox" id="check" style="width: 70%;">
+                                            <input type="checkbox" class="custom-control-input" id="customCheckN">
+                                            <label class="custom-control-label" for="customCheckN"></label></div>
+                                    </div>
+                                    <div class="col-10">
+                                        <h4 id="tituloN"><b> Titulo del To-Do</b></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h4 id="FechaN">Fecha</h4>
+                                <p id="desN" class="card-text">Descripcion del To-Do</p><br>
+                                <div id="deleteN" class=" material-icons puntero">delete</div>
+                                <div id="abrircomentN" class=" material-icons puntero">comment</div>
+                            </div>
+
+
+
+                            <div class="input-group" id="inComentariosN"
+                                style="max-width: 45rem;left: 6%; display: none;">
+                                <input ID="inputcomentarioN" type="text" class="form-control"
+                                    placeholder="Ingresa tu comentario">
+                                <span class="input-group-btn"><button id="eComentN" class="btn btn-light" type="button">
+                                        <div class="material-icons" style>send</div>
+                                        <button id="cancComentN" class="btn btn-light" type="button">
+                                            <div class="material-icons">cancel</div>
+                                        </button></span></div>
+                        </div> -->
+                    <!-- <div id="ComentariosNss">
+                            <div class="card" style="width: 30rem;left:15%;display: none;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Comentario</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up
+                                        the bulk of the card's content.</p>
+                                </div>
+                            </div>
+                        </div> -->
+                </div>
+
+                <!-- fin de un todo -->
+        </div>
+    </div>
+    </div>
+
+
+    </section>
+    </div>
+    </div>
+
+    <!-- final de pagina principal -->
+
+
+
+    <script src="js/main.js" type="text/javascript"></Script>
+    <script src="js/peticiones.js" type="text/javascript"></Script>
+</body>
+
+</html>
