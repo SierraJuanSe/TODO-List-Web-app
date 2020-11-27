@@ -167,6 +167,18 @@ function crearComentario(idTodo, coment) {
     return true;
 }
 
+async function crearEquipo(nombre,descripcion){
+return true;
+}
+
+async function consultarEquipos(nombre,descripcion){
+
+}
+
+async function UnirEquipo(cod){
+return true;
+}
+
 
 
 function setCookie(token) {

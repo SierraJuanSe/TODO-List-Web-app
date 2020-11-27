@@ -1,4 +1,6 @@
-// $("#wrapper").hide();
+$('#fondo').hide();
+$("#wrapper").show();
+
 $("#Cuenta").click(function () {
     // Animacion para mostrara el regiitro:
     $("#Registro").removeClass("animate__animated animate__backOutRight");
@@ -104,10 +106,7 @@ function mostrarPaginaPrincipal() {
 }
 
 $("#cerrarsesion").click(function () {
-    // $("#Todos").empty();
     location.reload();
-    // $("#wrapper").hide(700);
-    // $('#fondo').show(700);
 });
 
 //Boton para habilitar el menu Hamburguesa
