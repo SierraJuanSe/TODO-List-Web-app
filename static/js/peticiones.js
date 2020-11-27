@@ -175,6 +175,7 @@ async function consultarEquipos(nombre,descripcion){
 
 }
 
+
 async function UnirEquipo(cod){
 return true;
 }

@@ -115,16 +115,24 @@ nav{
 	text-decoration: none;
 	padding: 10px;
 	color: rgba(255,255,255,0.75);
-	border-bottom: 1px solid rgba(255,255,255,0.2);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.301);
 	transition: all ease 0.25s;
 
 }
 
+.Cequipos{
+	display:block;
+	text-decoration: none;
+	padding: 5px;
+	color: rgba(255,255,255,0.75);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.301);
+	transition: all ease 0.25s;	
+}
 
-
-.sNav :hover{
-	color: rgb(0, 0, 0);
+.Cequipos :hover{
+	color: rgb(43, 43, 43);
 	border-bottom-color:rgba(0, 0, 0, 0.4);
+	cursor: pointer;
 }
 
 .puntero{
