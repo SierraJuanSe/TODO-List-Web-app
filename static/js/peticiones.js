@@ -1,4 +1,4 @@
-const url = "http://ec2-34-201-40-4.compute-1.amazonaws.com";
+const url = "http://ec2-3-84-191-165.compute-1.amazonaws.com/";
 var token = "";
 
 async function crearCuenta(nombre, apellido, correo, contraseña) {
@@ -173,6 +173,10 @@ return true;
 
 async function consultarEquipos(nombre,descripcion){
 
+}
+
+async function consultarInfoEquipos(idEquipo){
+return true;
 }
 
 

@@ -1,5 +1,5 @@
-$('#fondo').hide();
-$("#wrapper").show();
+// $('#fondo').hide();
+// $("#wrapper").show();
 
 $("#Cuenta").click(function () {
     // Animacion para mostrara el regiitro:

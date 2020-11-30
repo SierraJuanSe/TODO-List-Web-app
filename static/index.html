@@ -140,7 +140,7 @@
                             <div id="Menu">
                                 <div>
 
-                                    <a id="seccionTodo" @click="cambiarTitulo('Mis To-Do')" class="sNav" href="#">
+                                    <a id="seccionTodo" @click="MostrarEquipo('Mis To-Do')" class="sNav" href="#">
                                         <div class="material-icons">folder</div> Mis To-Do
                                     </a>
                                 </div>
@@ -163,7 +163,7 @@
 
                                 <div v-if="seen">
                                     <div v-for="e in equipo" class="Cequipos">
-                                        <span href="#" @click="cambiarTitulo(e.nombre)"  v-bind:title="e.descripcion">
+                                        <span href="#" @click="MostrarEquipo(e.nombre,e.id)"  v-bind:title="e.descripcion">
                                             <label class="material-icons">
                                                 arrow_right_alt
                                             </label>{{e.nombre}}
@@ -263,8 +263,8 @@
                 <div id="nuevot">
                     <div id="MenuEquipo">
                     <div v-if="view" style="width: 80%;" class="btn-group" role="group" aria-label="Basic example">
-                        <button v-on:click="pos = false    " type="button" class="btn btn-outline-primary">To-Dos del equipo</button>
-                        <button  v-on:click="pos = true" type="button" class="btn btn-outline-primary">Colaboradores del equipo</button>
+                        <button v-on:click="cambiarEstado(false)" type="button" class="btn btn-outline-primary">To-Dos del equipo</button>
+                        <button  v-on:click="cambiarEstado(true)" type="button" class="btn btn-outline-primary">Colaboradores del equipo</button>
 
                     </div>
                     <br><br>
@@ -290,8 +290,9 @@
 
 
                 </div>
+                
                 <div class="card todo bg-light" id="crearT" style="display: none;">
-                    <br>
+             
                     <h5>Crear To-Do</h5>
                     <div class="card-body">
                         <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
@@ -320,9 +321,9 @@
                 </div>
 
                 <br>
-                <div id="Todos">
+                <div id="Todos" v-if="misT"> 
                     <!-- Aca van todos los Todos -->
-
+                    
                 </div>
 
                 <!-- fin de un todo -->
@@ -336,7 +337,6 @@
     </div>
 
     <!-- final de pagina principal -->
-
 
 
     <script src="js/main.js" type="text/javascript"></Script>

@@ -1,4 +1,5 @@
 // Se crea el objeto de Vue para el modal
+inTeam = false;
 var modalE = new Vue({
   el: '#modalCrearE',
   data: {
@@ -33,11 +34,14 @@ async function enviarEquipo(nombre, desc) {
     if (result) {
       modalE.estadoerror = false;
       modalE.toggle = 3;
-      var equi={
-        "nombre":nombre,
-        "descripcion":desc
+      var equi = {
+        "id": "1234",
+        "nombre": nombre,
+        "descripcion": desc
       }
       Menu.equipo.push(equi);
+      modalE.nomE = "";
+      modalE.desE = "";
     } else {
       modalE.error = "Error, Revise los datos o intentelo nuevamente";
       modalE.estadoerror = true;
@@ -57,6 +61,7 @@ async function enviarUnion(codigo) {
       modalE.estadoerror = false;
       swal("Muy bien", "Te acabas de unir a un equipo de trabajo", "success");
       $('#CrearGrupo').modal('hide');
+      modalE.codE = "";
       modalE.toggle = 0;
     } else {
       modalE.error = "Error, Revise los datos o intentelo nuevamente";
@@ -73,32 +78,60 @@ var Menu = new Vue({
   el: '#Menu',
   data: {
     // datos del objeto
-    equipo: [{ "nombre": "Todo-List","descripcion":"Es un proyecto que funciona para que organices tus tareas" },
-     { "nombre": "Python-Covid","descripcion":"Es un proyecto que funciona para ver estadisticas del covid" }],
-     seen:false
-     
-  },methods:{
-    cambiarTitulo:function(Titulo){
-      tittle.titulo=Titulo;
-      if(Titulo=="Mis To-Do"){
-        MenuEquipo.view=false;
-      }else{
-        MenuEquipo.view=true;
+    equipo: [{ "id": "4234", "nombre": "Todo-List", "descripcion": "Es un proyecto que funciona para que organices tus tareas" },
+    { "id": "411222", "nombre": "Python-Covid", "descripcion": "Es un proyecto que funciona para ver estadisticas del covid" }],
+    seen: false,
+    idEquipoSel: 0
+  }, methods: {
+    MostrarEquipo: async function (Titulo, id) {
+      this.idEquipoSel=id;
+      console.log(this.idEquipoSel);
+      if (Titulo == "Mis To-Do") {
+        MenuEquipo.view = false;
+        tittle.titulo = Titulo;
+      } else {
+        var consultaEquipos = await consultarInfoEquipos(id);
+        if (consultaEquipos) {
+          tittle.titulo = Titulo;
+          MenuEquipo.view = true;
+        } else {
+          swal("Error", "Itentalo nuevamente mas tarde", "error");
+        }
       }
-          }
+    }
   }
 
 });
 
+// Objeto para mostrara y ocultar los todos
+var TodosPintados = new Vue({
+  el: '#Todos',
+  data: {
+    misT: true,
+  }
+});
 
-var MenuEquipo=new Vue({
-  el:"#MenuEquipo",
-  data:{
-    pos:false,
-    view:false,
-    personas:[{"nombre":"Juan","apellido":"Sierra","correo":"Juan@hptmail.com"},
-    {"nombre":"Felipe","apellido":"Velasquez","correo":"Juan*@hptmail.com"},
-    {"nombre":"Camilo","apellido":"Aro","correo":"Juan123@hptmail.com"}]
+//objeto que guarda los integrantes de un quipo y los oculta
+var MenuEquipo = new Vue({
+  el: "#MenuEquipo",
+  data: {
+    pos: false,
+    view: false,
+    personas: [{ "nombre": "Juan", "apellido": "Sierra", "correo": "Juan@hptmail.com" },
+    { "nombre": "Felipe", "apellido": "Velasquez", "correo": "Juan*@hptmail.com" },
+    { "nombre": "Camilo", "apellido": "Aro", "correo": "Juan123@hptmail.com" }]
+  }, methods: {
+    cambiarEstado: function (estado) {
+      this.pos = estado;
+      //  if(estado){
+      //   TodosPintados.misT=false;
+      //  }else{
+      //   TodosPintados.misT=true;
+      //  }
+
+      //  console.log(TodosPintados.misT+"  "+this.pos)
+
+    }
   }
 });
 
@@ -108,12 +141,10 @@ var tittle = new Vue({
   el: '#tittle',
   data: {
     // datos del objeto
-   titulo:"Mis To-Do"
+    titulo: "Mis To-Do"
   }
 });
 
-var MTodos = new Vue({
 
-});
 
 
