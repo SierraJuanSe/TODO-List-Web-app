@@ -12,6 +12,7 @@ from pymongo import MongoClient
 
 class Connector:
     """ Clase que connecta la base de datos con el modelo"""
+
     def __init__(self):
         """ Inicio de la base de datos con la uri"""
         self.uri = "mongodb+srv://adminuser:admin1234@cluster-todo.uf1xn.mongodb.net/<dbname>?retryWrites=true&w=majority"
@@ -30,11 +31,12 @@ class Connector:
         return self.client['todoapp'].users
 
     def get_todos_collection(self):
-        """ retorna la isntancia de todos de la base de datos """
+        """ retorna la instancia de todos de la base de datos """
         return self.client['todoapp'].todos
 
-
-
+    def get_teams_collection(self):
+        """ retrona la instancia de equipos de la base de datos """
+        return self.client['todoapp'].teams
 
 
 if __name__ == '__main__':
