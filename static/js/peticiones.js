@@ -167,6 +167,11 @@ function crearComentario(idTodo, coment) {
     return true;
 }
 
+function crearTodoEquipo(idEquipo,titulo, descripcion, fecha,fechaCreacion) {
+    console.log(idEquipo+titulo)
+    return true;
+}
+
 async function crearEquipo(nombre,descripcion){
 return true;
 }

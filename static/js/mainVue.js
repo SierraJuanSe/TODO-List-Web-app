@@ -84,11 +84,13 @@ var Menu = new Vue({
     idEquipoSel: 0
   }, methods: {
     MostrarEquipo: async function (Titulo, id) {
+      inTeam = true;
       this.idEquipoSel=id;
-      console.log(this.idEquipoSel);
       if (Titulo == "Mis To-Do") {
         MenuEquipo.view = false;
         tittle.titulo = Titulo;
+        inTeam=false;
+        consultarTodo();
       } else {
         var consultaEquipos = await consultarInfoEquipos(id);
         if (consultaEquipos) {
@@ -105,9 +107,10 @@ var Menu = new Vue({
 
 // Objeto para mostrara y ocultar los todos
 var TodosPintados = new Vue({
-  el: '#Todos',
+  el: '.LTodos',
   data: {
     misT: true,
+    crearT: false
   }
 });
 
@@ -119,7 +122,7 @@ var MenuEquipo = new Vue({
     view: false,
     personas: [{ "nombre": "Juan", "apellido": "Sierra", "correo": "Juan@hptmail.com" },
     { "nombre": "Felipe", "apellido": "Velasquez", "correo": "Juan*@hptmail.com" },
-    { "nombre": "Camilo", "apellido": "Aro", "correo": "Juan123@hptmail.com" }]
+    { "nombre": "Camilo", "apellido": "AAAA", "correo": "Juan123@hptmail.com" }]
   }, methods: {
     cambiarEstado: function (estado) {
       this.pos = estado;
@@ -127,6 +130,7 @@ var MenuEquipo = new Vue({
       //   TodosPintados.misT=false;
       //  }else{
       //   TodosPintados.misT=true;
+
       //  }
 
       //  console.log(TodosPintados.misT+"  "+this.pos)

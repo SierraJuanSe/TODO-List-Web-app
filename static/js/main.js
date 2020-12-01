@@ -116,6 +116,7 @@ $('#menu_on').click(function () {
 
 //Boton para crear un Todo
 $("#botonCrearTodo").click(function () {
+    console.log(Menu.idEquipoSel)
     $('#nuevot').hide(700);
     $("#crearT").show(700);
 });
@@ -143,7 +144,11 @@ async function enviarTODO(titulo, des, Fecha) {
     } else {
         var d = new Date();
         FechaCreacion = (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
-        var result = await crearTodo(titulo, des, Fecha,FechaCreacion);
+        if(!inTeam){
+            var result = await crearTodo(titulo, des, Fecha,FechaCreacion);
+        }else{
+            var result = await crearTodoEquipo(Menu.idEquipoSel,titulo, des, Fecha,FechaCreacion);
+        }
         if (result) {
             $('#nuevot').show(700);
             $("#crearT").hide(700);
@@ -166,6 +171,7 @@ $("#cancelartodo").click(function () {
 
 //Actualiza los ToDo que estan en la base de datos
 $("#seccionTodo").click(function () {
+    inTeam=false;
 consultarTodo();
 });
 
