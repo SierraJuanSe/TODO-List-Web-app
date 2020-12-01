@@ -40,7 +40,7 @@ def user_login():
 
 
 # respuestas para las peticiones referentes a los usuarios controlador usuarios
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user', methods=['POST'])
 def user_controller():
 
     if request.method == 'POST':
@@ -133,7 +133,7 @@ def all_teams(user_id):
         """ info de todos los quipos en los que se esta inscrito """
         user = User(user_id=ObjectId(user_id))
         response['teams'] = user.get_my_teams()
-        response['status'] = 200
+        response['status'] = status
         response['message'] = 'teams requested'
 
     if request.method == 'POST':
@@ -156,7 +156,21 @@ def all_teams(user_id):
     return jsonify(response), status
 
 
-@app.route('/join_team/<user_id>', methods=['POST'])
+@app.route('/teams/users/<team_id>', methods=['GET'])
+def single_team(team_id):
+    response = {}
+    status = 200
+
+    if request.method == 'GET':
+        team = Team(team_id=ObjectId(team_id))
+        response['team_mebers'] = team.query_members()
+        response['message'] = 'team members requested'
+        response['status'] = status
+
+    return jsonify(response), status
+
+
+@app.route('/teams/join/<user_id>', methods=['POST'])
 def join_team(user_id):
     response = {}
     status = 200
