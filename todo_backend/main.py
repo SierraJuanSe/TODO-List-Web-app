@@ -69,11 +69,15 @@ def todo_controller():
         # Creacion y almecenamiento de un nuevo todo
         userid = request.headers['userid']
         req_data = request.get_json()
+        team_id = ObjectId(req_data['team_id']
+                           ) if req_data['team_id'] else None
+
         newTodo = Todo(
             title=req_data['title'],
             description=req_data['description'],
             create_date=req_data['create_date'],
             end_date=req_data['end_date'],
+            team_id=team_id,
             owner_id=userid)
 
         insert_result = newTodo.insert_todo()
@@ -124,6 +128,8 @@ def todo_controller():
         else:
             return jsonify(status=500, status_message='todo not deleted'), 500
 
+# respuestas para las peticiones de crear y unirse a un equipo
+
 
 @app.route('/teams/<user_id>', methods=['GET', 'POST'])
 def all_teams(user_id):
@@ -155,9 +161,11 @@ def all_teams(user_id):
 
     return jsonify(response), status
 
+# respuestas para las petciones de los miembros de un equipo
+
 
 @app.route('/teams/users/<team_id>', methods=['GET'])
-def single_team(team_id):
+def single_team_users(team_id):
     response = {}
     status = 200
 
@@ -168,6 +176,24 @@ def single_team(team_id):
         response['status'] = status
 
     return jsonify(response), status
+
+# respuestas para las peticiones de los todos de un equipo
+
+
+@app.route('/teams/todos/<team_id>', methods=['GET'])
+def single_team_todos(team_id):
+    response = {}
+    status = 200
+
+    if request.method == 'GET':
+        team = Team(team_id=ObjectId(team_id))
+        response['team_todos'] = team.query_todos()
+        response['message'] = 'team todos requested'
+        response['status'] = status
+
+    return jsonify(response), status
+
+# respuestas para el ingreso a un equipo ya existente
 
 
 @app.route('/teams/join/<user_id>', methods=['POST'])

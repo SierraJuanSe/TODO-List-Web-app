@@ -69,6 +69,48 @@ class Team:
 
         return [u['team_members'] for u in teams.aggregate(pipeline)]
 
+    def query_todos(self):
+        """ consulta  los todos de un equipo """
+        conn = Connector()
+        teams = conn.get_teams_collection()
+
+        pipeline = [
+            {
+                "$match": {
+                    '_id': self.team_id
+                }
+            },
+            {
+                "$lookup": {
+                    'from':  'todos',
+                    'let': {'team_id': '$_id'},
+                    'pipeline': [
+                        {
+                            '$match': {
+                                '$expr': {
+                                    '$eq': ['$team_id', '$$team_id']
+                                }
+                            }
+                        },
+                        {
+                            '$project': {
+                                '_id': {'$toString': '$_id'},
+                                'title': 1,
+                                'description': 1,
+                                'end_date': 1,
+                                'status': 1,
+                                'owner_id': 1,
+                                'team_id': {'$toString': '$team_id'}
+                            }
+                        }
+                    ],
+                    'as': 'team_todos'
+                }
+            }
+        ]
+
+        return [t['team_todos'] for t in teams.aggregate(pipeline)]
+
     def create_team(self):
         """ creacion de un equipo de trabajo """
         conn = Connector()
