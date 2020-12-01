@@ -11,6 +11,7 @@ from bson.objectid import ObjectId
 
 from models.user import User
 from models.todo import Todo
+from models.team import Team
 from utils.format import dateformat, list_todos_format
 
 app = Flask(__name__)
@@ -127,12 +128,54 @@ def todo_controller():
 @app.route('/teams/<user_id>', methods=['GET', 'POST'])
 def all_teams(user_id):
     response = {}
+    status = 200
     if request.method == 'GET':
+        """ info de todos los quipos en los que se esta inscrito """
         user = User(user_id=ObjectId(user_id))
         response['teams'] = user.get_my_teams()
         response['status'] = 200
+        response['message'] = 'teams requested'
 
-    return jsonify(response)
+    if request.method == 'POST':
+        """ creacion y union automatica de un equipo """
+        req_data = request.get_json()
+        team = Team(name=req_data['name'], desc=req_data['desc'])
+        if team.create_team():
+            user = User(user_id=ObjectId(user_id))
+            if user.join_team(team.team_id):
+                response['message'] = 'team create and joined'
+            else:
+                response['message'] = 'team create but not joined'
+                status = 500
+        else:
+            response['message'] = 'team not created'
+            status = 500
+
+        response['status'] = status
+
+    return jsonify(response), status
+
+
+@app.route('/join_team/<user_id>', methods=['POST'])
+def join_team(user_id):
+    response = {}
+    status = 200
+    req_data = request.get_json()
+
+    team = Team(code=req_data['code'])
+    if team.query_by_code():
+        user = User(user_id=ObjectId(user_id))
+        if user.join_team(team.team_id):
+            response['message'] = 'team joined'
+        else:
+            response['message'] = 'team not joined'
+            status = 500
+    else:
+        response['message'] = 'team dont found'
+        status = 404
+
+    response['status'] = status
+    return jsonify(response), status
 
 
 if __name__ == '__main__':

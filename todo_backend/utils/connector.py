@@ -59,40 +59,34 @@ if __name__ == '__main__':
     pipeline = [
         {
             "$match": {
-                '_id': ObjectId('5f9c90cbf2fb4fb7347327b6')
+                '_id': ObjectId('5fc6a991bfe2b590321ec179')
             }
         },
         {
-            '$project': {
-                '_id': {'$toString': '$_id'},
-                'teams': 1
-            }
-        },
-        {
-            '$lookup': {
-                'from': 'teams',
-                'let': {'teams_id': '$teams'},
+            "$lookup": {
+                'from':  'users',
+                'let': {'team_id': '$_id'},
                 'pipeline': [
                     {
                         '$match': {
                             '$expr': {
-                                '$in': ['$_id', '$$teams_id']
+                                # '$eq': ['$email', 'test@test.com']
+                                '$in': ['$$team_id', '$teams']
                             }
                         }
                     },
                     {
                         '$project': {
                             '_id': {'$toString': '$_id'},
-                            'name': 1,
-                            'desc': 1,
-                            'code': 1,
+                            'email': 1,
+                            'fname': 1,
+                            'lname': 1,
                         }
                     }
                 ],
-                'as': 'my_teams'
+                'as': 'team_members'
             }
         }
     ]
-
-    result = [u for u in users.aggregate(pipeline)]
+    result = [u['team_members'] for u in teams.aggregate(pipeline)]
     print(result)

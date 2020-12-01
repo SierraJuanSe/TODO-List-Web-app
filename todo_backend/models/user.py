@@ -14,6 +14,7 @@ class User:
         self.fname = fname
         self.lname = lname
         self.password = password
+        self.teams = []
 
     def count_users(self):
         """ Cuenta el numero de usuario almacenados """
@@ -68,6 +69,7 @@ class User:
                 "fname": self.fname,
                 "lname": self.lname,
                 "password": self.password,
+                "teams": []
             })
             if insert_result.acknowledged:
                 self.user_id = insert_result.inserted_id
@@ -101,6 +103,7 @@ class User:
         return True if delete_result else False
 
     def get_my_teams(self):
+        """ consulta de todos los equipos a los que pertenece un usuario"""
         conn = Connector()
         users = conn.get_user_collection()
 
@@ -143,3 +146,12 @@ class User:
         ]
 
         return [u['my_teams'] for u in users.aggregate(pipeline)]
+
+    def join_team(self, team_id):
+        """ ingresa un nuevo equipo al array de equipos """
+        conn = Connector()
+        users = conn.get_user_collection()
+
+        update_result = users.update_one(
+            {'_id': self.user_id}, {'$push': {'teams': team_id}})
+        return True if update_result.acknowledged else False
