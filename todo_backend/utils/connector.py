@@ -8,6 +8,7 @@ La Clase Conector permite:
     5. retornar una instancia de la coleccion todos (igual que una tabla)
 """
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 
 class Connector:
@@ -42,13 +43,56 @@ class Connector:
 if __name__ == '__main__':
     conn = Connector()
     client = conn.get_client()
-    print(client.stats)
-    print(client.list_database_names())
+    # print(client.stats)
+    # print(client.list_database_names())
     tododb = conn.get_db()
-    print(tododb.list_collection_names())
+    # print(tododb.list_collection_names())
 
     users = conn.get_user_collection()
     todos = conn.get_todos_collection()
+    teams = conn.get_teams_collection()
 
-    print(users.count_documents({}))
-    print(todos.count_documents({}))
+    # print(users.count_documents({}))
+    # print(todos.count_documents({}))
+    # print(teams.count_documents({}))
+
+    pipeline = [
+        {
+            "$match": {
+                '_id': ObjectId('5f9c90cbf2fb4fb7347327b6')
+            }
+        },
+        {
+            '$project': {
+                '_id': {'$toString': '$_id'},
+                'teams': 1
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'teams',
+                'let': {'teams_id': '$teams'},
+                'pipeline': [
+                    {
+                        '$match': {
+                            '$expr': {
+                                '$in': ['$_id', '$$teams_id']
+                            }
+                        }
+                    },
+                    {
+                        '$project': {
+                            '_id': {'$toString': '$_id'},
+                            'name': 1,
+                            'desc': 1,
+                            'code': 1,
+                        }
+                    }
+                ],
+                'as': 'my_teams'
+            }
+        }
+    ]
+
+    result = [u for u in users.aggregate(pipeline)]
+    print(result)

@@ -124,5 +124,16 @@ def todo_controller():
             return jsonify(status=500, status_message='todo not deleted'), 500
 
 
+@app.route('/teams/<user_id>', methods=['GET', 'POST'])
+def all_teams(user_id):
+    response = {}
+    if request.method == 'GET':
+        user = User(user_id=ObjectId(user_id))
+        response['teams'] = user.get_my_teams()
+        response['status'] = 200
+
+    return jsonify(response)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
