@@ -3,6 +3,7 @@ Modelo DAO de los usuarios con el cual se hace la relacion con la base de datos 
 """
 from utils.connector import Connector
 
+
 class User:
     """Modelo Usuario connectado a la base de datos"""
 
@@ -13,14 +14,13 @@ class User:
         self.fname = fname
         self.lname = lname
         self.password = password
-
+        self.teams = []
 
     def count_users(self):
         """ Cuenta el numero de usuario almacenados """
         conn = Connector()
         users = conn.get_user_collection()
         return users.count_documents({})
-    
 
     def query_all_users(self):
         """ consulta y trae todos los usuarios almacenados"""
@@ -28,12 +28,12 @@ class User:
         users = conn.get_user_collection()
         return users.find({})
 
-
     def query_user(self):
         """ Consulta un usuario por correo y actualiza los datos de la instancia """
         conn = Connector()
         users = conn.get_user_collection()
-        data = users.find_one({"email": self.email}, {"email":1, "fname":1, "lname":1})
+        data = users.find_one({"email": self.email}, {
+                              "email": 1, "fname": 1, "lname": 1})
         if data:
             self.user_id = data["_id"]
             self.email = data['email']
@@ -47,7 +47,8 @@ class User:
         """ Consulta un usuario por correo y contrasena y actualiza los datos de la instancia """
         conn = Connector()
         users = conn.get_user_collection()
-        data = users.find_one({"email": self.email, "password": self.password}, {"email":1, "fname":1, "lname":1})
+        data = users.find_one({"email": self.email, "password": self.password}, {
+                              "email": 1, "fname": 1, "lname": 1})
         if data:
             self.user_id = data["_id"]
             self.email = data['email']
@@ -57,8 +58,6 @@ class User:
         else:
             return False
 
-
-
     def insert_user(self):
         """ Inserta un nuevo usuario a la base de datos si no existe """
         conn = Connector()
@@ -66,11 +65,12 @@ class User:
 
         if not self.query_user() and self.email and self.password:
             insert_result = users.insert_one({
-                "email":self.email,
-                "fname":self.fname,
-                "lname":self.lname,
-                "password":self.password,
-                })
+                "email": self.email,
+                "fname": self.fname,
+                "lname": self.lname,
+                "password": self.password,
+                "teams": []
+            })
             if insert_result.acknowledged:
                 self.user_id = insert_result.inserted_id
                 return 1
@@ -78,7 +78,6 @@ class User:
                 return 0
         else:
             return -1
-
 
     def update_user(self):
         """" Actualiza la informacion de un usuario """
@@ -92,18 +91,67 @@ class User:
         if self.password:
             new_data["password"] = self.password
 
-
-        update_result = users.update_one({"_id":self.user_id}, {"$set": new_data})
+        update_result = users.update_one(
+            {"_id": self.user_id}, {"$set": new_data})
         return True if update_result.acknowledged else False
-        
 
     def delete_user(self):
         """ Elimina el usuario de la base de datos """
         conn = Connector()
         users = conn.get_user_collection()
-        delete_result = users.delete_one({"_id":self.user_id})
+        delete_result = users.delete_one({"_id": self.user_id})
         return True if delete_result else False
 
+    def get_my_teams(self):
+        """ consulta de todos los equipos a los que pertenece un usuario"""
+        conn = Connector()
+        users = conn.get_user_collection()
 
+        pipeline = [
+            {
+                "$match": {
+                    '_id': self.user_id
+                }
+            },
+            {
+                '$project': {
+                    '_id': {'$toString': '$_id'},
+                    'teams': 1
+                }
+            },
+            {
+                '$lookup': {
+                    'from': 'teams',
+                    'let': {'teams_id': '$teams'},
+                    'pipeline': [
+                        {
+                            '$match': {
+                                '$expr': {
+                                    '$in': ['$_id', '$$teams_id']
+                                }
+                            }
+                        },
+                        {
+                            '$project': {
+                                '_id': {'$toString': '$_id'},
+                                'name': 1,
+                                'desc': 1,
+                                'code': 1,
+                            }
+                        }
+                    ],
+                    'as': 'my_teams'
+                }
+            }
+        ]
 
+        return [u['my_teams'] for u in users.aggregate(pipeline)]
 
+    def join_team(self, team_id):
+        """ ingresa un nuevo equipo al array de equipos """
+        conn = Connector()
+        users = conn.get_user_collection()
+
+        update_result = users.update_one(
+            {'_id': self.user_id}, {'$push': {'teams': team_id}})
+        return True if update_result.acknowledged else False
