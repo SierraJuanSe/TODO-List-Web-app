@@ -69,7 +69,7 @@ class User:
                 "fname": self.fname,
                 "lname": self.lname,
                 "password": self.password,
-                "teams": []
+                "teams": self.teams
             })
             if insert_result.acknowledged:
                 self.user_id = insert_result.inserted_id

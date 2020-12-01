@@ -28,7 +28,7 @@ class Todo:
         """ Retorna todos los todos de un usario """
         conn = Connector()
         todos = conn.get_todos_collection()
-        return todos.find({"owner_id": self.owner_id})
+        return todos.find({"owner_id": self.owner_id, 'team_id': None})
 
     def query_todo(self):
         """ Retorna el todo consultado en caso de que exista """
