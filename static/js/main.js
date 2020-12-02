@@ -1,4 +1,6 @@
-// $("#wrapper").hide();
+// $('#fondo').hide();
+// $("#wrapper").show();
+
 $("#Cuenta").click(function () {
     // Animacion para mostrara el regiitro:
     $("#Registro").removeClass("animate__animated animate__backOutRight");
@@ -83,6 +85,7 @@ async function enviarLogin(correo, contraseña) {
     var result = await login(correo, contraseña);
     if (result) {
         consultarTodo();
+        Menu.mostrarEquipos();
         mostrarPaginaPrincipal();
         pintarNombre(result.nombre, result.apellido);
     } else {
@@ -91,22 +94,20 @@ async function enviarLogin(correo, contraseña) {
     }
 }
 
+//La Funcion muetsra el nombre del usuario autenticado
 function pintarNombre(nombre, apellido) {
     $("#nombreUser").empty();
     $("#nombreUser").append('<h3>' + nombre + ' ' + apellido + '</h3>')
 }
 
-
+//Muestra la pagina luego de ser autenticado
 function mostrarPaginaPrincipal() {
     $('#fondo').hide();
     $("#wrapper").show();
 }
 
 $("#cerrarsesion").click(function () {
-    // $("#Todos").empty();
     location.reload();
-    // $("#wrapper").hide(700);
-    // $('#fondo').show(700);
 });
 
 //Boton para habilitar el menu Hamburguesa
@@ -114,11 +115,14 @@ $('#menu_on').click(function () {
     $('body').toggleClass('visible_menu');
 })
 
+//Boton para crear un Todo
 $("#botonCrearTodo").click(function () {
+    console.log(Menu.idEquipoSel)
     $('#nuevot').hide(700);
     $("#crearT").show(700);
 });
 
+//Boton que recoje datos para crear un todo y luego llama a su repsectiva funcion
 id = 0;
 $("#Creartodo").click(function () {
     id += 1;
@@ -134,13 +138,15 @@ $("#Creartodo").click(function () {
 
 });
 
+//Funcion que recibe los datos de un todo para enviarlos al llamado ajax
 async function enviarTODO(titulo, des, Fecha) {
     if (titulo == "") {
         swal("Error", "Ingresas todos los datos", "error");
     } else {
         var d = new Date();
         FechaCreacion = (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
-        var result = await crearTodo(titulo, des, Fecha,FechaCreacion);
+// console.log(MenuEquipo.idEquipoSel)
+            var result = await crearTodo(Menu.idEquipoSel,titulo, des, Fecha,FechaCreacion);
         if (result) {
             $('#nuevot').show(700);
             $("#crearT").hide(700);
@@ -155,16 +161,18 @@ async function enviarTODO(titulo, des, Fecha) {
     }
 }
 
+//Boton cancela la creacion de un todo
 $("#cancelartodo").click(function () {
     $('#nuevot').show(700);
     $("#crearT").hide(700);
 });
 
+//Actualiza los ToDo que estan en la base de datos
 $("#seccionTodo").click(function () {
 consultarTodo();
 });
 
-
+//Funcion que recibe los todos del back
 function traerTodos(todos) {
     $("#Todos").empty();
     for (const todo of todos) {
@@ -172,7 +180,7 @@ function traerTodos(todos) {
     }
 }
 
-// Toda la parte de dear funciones a los botones de cada TODO
+//Esta funcion muestra los todos que llegan como argmento en la interfaz grafica
 function pintarTODO(id, Titulo, Fecha, Descripcion, comentarios,estado) {
     
     com = "";
@@ -193,12 +201,15 @@ function pintarTODO(id, Titulo, Fecha, Descripcion, comentarios,estado) {
         '<div class="material-icons" style>send</div><button id="cancComent' + id + '" class="btn btn-light" type="button">' +
         '<div class="material-icons">cancel</div></button></div></div></div><div id="Comentarios' + id + '" style="display:none;">' + com + '</div></div><br>';
     $("#Todos").append(TODO);
+    //Llama  acada funcion para dare acciones a cada boton del todo
     checkbox(id,estado);
     abrirCancelarComment(id);
     botonBorrar(id);
     botoncrearComentario(id);
 }
 
+// Toda la parte de darle funciones a los botones de cada TODO
+//Da acciones a el checbox del todo
 function checkbox(id,estado) {
     $("#customCheck" + id).click(function () {
         accionesCheck(id,estado);
@@ -211,7 +222,7 @@ function checkbox(id,estado) {
     }
 }
 
-
+//Da acciones a el checbox del todo
 async function accionesCheck(id) {
 
 
@@ -241,7 +252,7 @@ async function accionesCheck(id) {
 
 
 
-
+//Da acciones a el boton de comentarios del TODO
 señal = false;
 function abrirCancelarComment(id) {
     $("#abrircoment" + id).click(function () {
@@ -261,7 +272,7 @@ function abrirCancelarComment(id) {
     });
 }
 
-
+//Da acciones el boton de crear un comentario 
 function botoncrearComentario(id) {
     $("#eComent" + id).click(function () {
         coment = $("#inputcomentario" + id).val();
@@ -281,7 +292,7 @@ function botoncrearComentario(id) {
     });
 }
 
-
+//Da acciones a el boton de borrar un todo
 function botonBorrar(id) {
     $("#delete" + id).click( function () {
         swal({ title: "¿Estas seguro de borra el Todo?", icon: "warning", buttons: true, dangerMode: true, })
@@ -291,7 +302,7 @@ function botonBorrar(id) {
                     if (result) {
                         $("#" + id).hide();
                     } else {
-                        swal("El To-Do no se pudo borrar", { icon: "error", });
+                        swal("No tienes acceso para borrar el ToDo seleccionado", { icon: "error", });
                     }
                 }
             });

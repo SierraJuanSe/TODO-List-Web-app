@@ -1,4 +1,4 @@
-const url = "http://ec2-34-201-40-4.compute-1.amazonaws.com";
+const url = "http://ec2-3-84-191-165.compute-1.amazonaws.com";
 var token = "";
 
 async function crearCuenta(nombre, apellido, correo, contraseña) {
@@ -84,13 +84,15 @@ async function consultarTodo() {
     }
 }
 
-async function crearTodo(titulo, descripcion, fecha,fechaCreacion) {
+async function crearTodo(idEquipo,titulo, descripcion, fecha,fechaCreacion) {
     data={
         "title" : titulo,
         "description" : descripcion,
         "create_date" :  fechaCreacion,
-        "end_date" :  fecha
+        "end_date" :  fecha,
+        "team_id":idEquipo
     }
+    console.log(data);
     try {
         result = await $.ajax({
             url: url + "/todo",
@@ -165,6 +167,116 @@ async function actualizarTodo(idTodo, estado) {
 
 function crearComentario(idTodo, coment) {
     return true;
+}
+
+
+
+async function crearEquipo(nombre,descripcion){
+    data={
+        "name" : nombre,
+        "desc" : descripcion
+    }
+    try {
+        result = await $.ajax({
+            url: url + `/teams/${readCookie('token')}`,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+        })
+        if (result.status == 200) {
+            // return {"idTodo":result.data['todo_id']};
+            return result.data
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        return 0;
+    }
+}
+
+async function consultarEquipos(){
+
+    try {
+        result = await $.ajax({
+            url:  url + `/teams/${readCookie('token')}`,
+            type: "GET",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+        })
+        if (result.status == 200) {
+            return result.teams[0];
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.log(error)
+        return [];
+    }
+}
+
+async function consultarTodosEquipos(idEquipo){
+
+    try {
+        result = await $.ajax({
+            url:  url + `/teams/todos/${idEquipo}`,
+            type: "GET",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+        })
+        if (result.status == 200) {
+            traerTodos(result.team_todos[0]);
+            return result.team_todos[0] ;
+        } else {
+            return -1;
+        }
+    } catch (error) {
+        console.log(error)
+        return -1;
+    }
+}
+
+async function consultarIntegrantesEquipos(idEquipo){
+    try {
+        result = await $.ajax({
+            url:  url + `/teams/users/${idEquipo}`,
+            type: "GET",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+        })
+        if (result.status == 200) {
+            console.log(result)
+            return result.team_mebers[0];
+        } else {
+            return [];
+        }
+    } catch (error) {
+        console.log(error)
+        return [];
+    }
+    }
+
+
+async function UnirEquipo(cod){
+    data={
+        "code" : cod,
+    }
+    try {
+        result = await $.ajax({
+            url: url + `/teams/join/${readCookie('token')}`,
+            data: JSON.stringify(data),
+            type: "POST",
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+        })
+        if (result.status == 200) {
+            return result.data;
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        return 0;
+    }
 }
 
 
