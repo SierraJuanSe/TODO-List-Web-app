@@ -93,7 +93,7 @@ def todo_controller():
         userid = request.headers['userid']
         todos = Todo(owner_id=userid)
 
-        mytodos = list_todos_format(todos.query_all_my_todos())
+        mytodos = todos.query_all_my_todos()
         data = {
             'info': {'userid': todos.owner_id, 'total': len(mytodos)},
             'todos': mytodos}
@@ -149,6 +149,12 @@ def all_teams(user_id):
         if team.create_team():
             user = User(user_id=ObjectId(user_id))
             if user.join_team(team.team_id):
+                response['data'] = {
+                    '_id': str(team.team_id),
+                    'name': team.name,
+                    'desc': team.desc,
+                    'code': team.code
+                }
                 response['message'] = 'team create and joined'
             else:
                 response['message'] = 'team create but not joined'
@@ -206,6 +212,12 @@ def join_team(user_id):
     if team.query_by_code():
         user = User(user_id=ObjectId(user_id))
         if user.join_team(team.team_id):
+            response['data'] = {
+                '_id': str(team.team_id),
+                'name': team.name,
+                'desc': team.desc,
+                'code': team.code
+            }
             response['message'] = 'team joined'
         else:
             response['message'] = 'team not joined'

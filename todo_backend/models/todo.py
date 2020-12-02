@@ -28,7 +28,29 @@ class Todo:
         """ Retorna todos los todos de un usario """
         conn = Connector()
         todos = conn.get_todos_collection()
-        return todos.find({"owner_id": self.owner_id})
+
+        pipeline = [
+            {
+                '$match': {
+                    "owner_id": self.owner_id,
+                    "team_id": None
+                }
+            },
+            {
+                '$project': {
+                    "_id": {'$toString': '$_id'},
+                    "title": 1,
+                    "description": 1,
+                    "create_date": 1,
+                    "end_date": 1,
+                    "status": 1,
+                    "owner_id": {'$toString': '$owner_id'},
+                    "team_id": {'$toString': '$team_id'}
+                }
+            }
+        ]
+
+        return list(todos.aggregate(pipeline))
 
     def query_todo(self):
         """ Retorna el todo consultado en caso de que exista """
