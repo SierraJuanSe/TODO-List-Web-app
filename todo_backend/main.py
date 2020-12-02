@@ -11,6 +11,7 @@ from bson.objectid import ObjectId
 
 from models.user import User
 from models.todo import Todo
+from models.team import Team
 from utils.format import dateformat, list_todos_format
 
 app = Flask(__name__)
@@ -39,7 +40,7 @@ def user_login():
 
 
 # respuestas para las peticiones referentes a los usuarios controlador usuarios
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user', methods=['POST'])
 def user_controller():
 
     if request.method == 'POST':
@@ -68,11 +69,15 @@ def todo_controller():
         # Creacion y almecenamiento de un nuevo todo
         userid = request.headers['userid']
         req_data = request.get_json()
+        team_id = ObjectId(req_data['team_id']
+                           ) if req_data['team_id'] else None
+
         newTodo = Todo(
             title=req_data['title'],
             description=req_data['description'],
             create_date=req_data['create_date'],
             end_date=req_data['end_date'],
+            team_id=team_id,
             owner_id=userid)
 
         insert_result = newTodo.insert_todo()
@@ -88,7 +93,7 @@ def todo_controller():
         userid = request.headers['userid']
         todos = Todo(owner_id=userid)
 
-        mytodos = list_todos_format(todos.query_all_my_todos())
+        mytodos = todos.query_all_my_todos()
         data = {
             'info': {'userid': todos.owner_id, 'total': len(mytodos)},
             'todos': mytodos}
@@ -122,6 +127,107 @@ def todo_controller():
             return jsonify(status=200, status_message='todo deleted', data=data)
         else:
             return jsonify(status=500, status_message='todo not deleted'), 500
+
+# respuestas para las peticiones de crear y unirse a un equipo
+
+
+@app.route('/teams/<user_id>', methods=['GET', 'POST'])
+def all_teams(user_id):
+    response = {}
+    status = 200
+    if request.method == 'GET':
+        """ info de todos los quipos en los que se esta inscrito """
+        user = User(user_id=ObjectId(user_id))
+        response['teams'] = user.get_my_teams()
+        response['status'] = status
+        response['message'] = 'teams requested'
+
+    if request.method == 'POST':
+        """ creacion y union automatica de un equipo """
+        req_data = request.get_json()
+        team = Team(name=req_data['name'], desc=req_data['desc'])
+        if team.create_team():
+            user = User(user_id=ObjectId(user_id))
+            if user.join_team(team.team_id):
+                response['data'] = {
+                    '_id': str(team.team_id),
+                    'name': team.name,
+                    'desc': team.desc,
+                    'code': team.code
+                }
+                response['message'] = 'team create and joined'
+            else:
+                response['message'] = 'team create but not joined'
+                status = 500
+        else:
+            response['message'] = 'team not created'
+            status = 500
+
+        response['status'] = status
+
+    return jsonify(response), status
+
+# respuestas para las petciones de los miembros de un equipo
+
+
+@app.route('/teams/users/<team_id>', methods=['GET'])
+def single_team_users(team_id):
+    response = {}
+    status = 200
+
+    if request.method == 'GET':
+        team = Team(team_id=ObjectId(team_id))
+        response['team_mebers'] = team.query_members()
+        response['message'] = 'team members requested'
+        response['status'] = status
+
+    return jsonify(response), status
+
+# respuestas para las peticiones de los todos de un equipo
+
+
+@app.route('/teams/todos/<team_id>', methods=['GET'])
+def single_team_todos(team_id):
+    response = {}
+    status = 200
+
+    if request.method == 'GET':
+        team = Team(team_id=ObjectId(team_id))
+        response['team_todos'] = team.query_todos()
+        response['message'] = 'team todos requested'
+        response['status'] = status
+
+    return jsonify(response), status
+
+# respuestas para el ingreso a un equipo ya existente
+
+
+@app.route('/teams/join/<user_id>', methods=['POST'])
+def join_team(user_id):
+    response = {}
+    status = 200
+    req_data = request.get_json()
+
+    team = Team(code=req_data['code'])
+    if team.query_by_code():
+        user = User(user_id=ObjectId(user_id))
+        if user.join_team(team.team_id):
+            response['data'] = {
+                '_id': str(team.team_id),
+                'name': team.name,
+                'desc': team.desc,
+                'code': team.code
+            }
+            response['message'] = 'team joined'
+        else:
+            response['message'] = 'team not joined'
+            status = 500
+    else:
+        response['message'] = 'team dont found'
+        status = 404
+
+    response['status'] = status
+    return jsonify(response), status
 
 
 if __name__ == '__main__':

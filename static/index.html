@@ -4,12 +4,16 @@
 <head>
     <title>To-do list</title>
     <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="icon" type="image/png" href="img/Logo1.png" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
@@ -19,7 +23,7 @@
 <body>
 
 
-    
+
 
     <!-- LOGIN -->
     <div id="fondo">
@@ -127,36 +131,173 @@
                         <li class="col text-center">
                             <img src="img/user.png" alt="" width="40%">
                             <div id="nombreUser">
-                                
+
                             </div>
                         </li>
                         <br>
+                        <li>
+                            <div id="Menu">
+                                <div>
 
-                        <li id="seccionTodo"><a href="#">
-                                <div class="material-icons">folder</div> Mis To-Do
-                            </a></li>
+                                    <a id="seccionTodo" @click="MostrarEquipo('Mis To-Do',null,null)" class="sNav" href="#">
+                                        <div class="material-icons">folder</div> Mis To-Do
+                                    </a>
+                                </div>
 
-                        <li id="cerrarsesion"><a href="#">
+                                <div class="row">
+                                    <div class="col-8" v-on:click="seen = !seen">
+                                        <a href="#" class="sNav">
+                                            <p class="material-icons">supervisor_account</p>Mis equipos
+                                        </a>
+
+                                    </div>
+                                    <div class="col-4">
+                                        <a type="button" data-toggle="modal" data-target="#CrearGrupo" href="#"
+                                            class="sNav">
+                                            <p class="material-icons">add_circle</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Todos los equipos de un usuario se muestran aca -->
+
+                                <div v-if="seen">
+                                    <div v-for="e in equipo" class="Cequipos">
+                                        <span href="#" @click="MostrarEquipo(e.name,e._id,e.code)"
+                                            v-bind:title="e.desc">
+                                            <label class="material-icons">
+                                                arrow_right_alt
+                                            </label>{{e.name}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <a class="sNav" id="cerrarsesion" href="#">
                                 <div class="material-icons">login</div>Cerrar sesión
-                            </a></li>
+                            </a>
+                        </li>
+
+
                     </ul>
                 </nav>
+                <!-- Modal de unirse o crear un grupo de estudio -->
+
+                <div class="modal fade" id="CrearGrupo" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content" id="modalCrearE">
+                            <div class="modal-header">
+                                <!-- Titulo del modal -->
+                                <h5 class="modal-title " id="staticBackdropLabel">
+                                    <div v-if="toggle==0" id="TopcionE">Selecciona una opción </div>
+                                    <div v-if="toggle==1" id="TcrearE">Crear un equipo</div>
+                                    <div v-if="toggle==2" id="TunirE">Unirte a un equipo</div>
+                                    <div v-if="toggle==3" id="TunirE">Codigo del Equipo creado</div>
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <!-- Seccion para seleccionar -->
+                                <div v-if="toggle==1 || toggle==0 || toggle==2 ">
+                                    <button @click='toggle = 1' type="button" class="btn btn-primary btn-lg">Crear un
+                                        equipo</button>
+                                    <button @click='toggle = 2' type="button" class="btn btn-secondary btn-lg">Unirte a
+                                        un equipo</button>
+                                </div>
+                                <br>
+                                <!-- seccion para crear un equipo -->
+                                <div id="CrearE">
+                                    <form v-if="toggle==1">
+                                        <input v-model="nomE" type="text" class="form-control" placeholder="Nombre"><br>
+
+                                        <textarea v-model="desE" class="form-control " id="Descripcion"
+                                            placeholder="Descripción" required></textarea>
+                                        <button type="button" v-on:click="validarInput" class="btn btn-primary">Crear
+                                            Grupo</button>
+                                    </form>
+                                </div>
+
+                                <!-- Seccion para unirse a u equipo -->
+                                <div id="unirE" v-if="toggle==2">
+                                    <input v-model="codE" type="text" class="form-control"
+                                        placeholder="Codigo del equipo"><br>
+                                    <button type="button" v-on:click="validarInput"
+                                        class="btn btn-primary">Unirte</button>
+                                </div>
+                                <!-- Div que copia en el portapaples el codgo del equipo de trabajo -->
+                                <div v-if="toggle==3" class="text-center">
+                                    <h2>{{codigoEquipo}}</h2>
+                                    <button v-on:click="copiarCodigo" class="btn btn-outline-secondary" type="button">
+                                        Cerrar
+                                    </button>
+
+                                </div>
+                                <!-- Seccion que muestra los errores -->
+                                <br>
+                                <div v-if="estadoerror">
+                                    <div class="alert alert-danger" role="alert">
+                                        {{error}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section id="Contenido">
-                <h1>Mis To-Do</To-Do></h1>
-                <br>
-                
+                <h1>
+                    <div id="tittle">
+                        {{titulo}}
+                    </div>
+                </h1>
+                <button type="button" id="botonCrearTodo" class="btn btn-link">
+                    <h3>
+                        <div class="material-icons">add_circle</div> Crear To-Do
+                    </h3>
+                </button>
+
                 <div id="nuevot">
-                    <button type="button" id="botonCrearTodo" class="btn btn-link">
-                        <h3>
-                            <div class="material-icons">add_circle</div> Crear To-Do
-                        </h3>
-                    </button>
+                    <div id="MenuEquipo">
+                        <div v-if="view" style="width: 80%;" class="btn-group" role="group" aria-label="Basic example">
+                            <button v-on:click="cambiarEstado(false)" type="button"
+                                class="btn btn-outline-primary">To-Dos del equipo</button>
+                            <button v-on:click="cambiarEstado(true)" type="button"
+                                class="btn btn-outline-primary">Colaboradores del equipo</button>
+                                <button v-on:click="mostrarCod()" type="button"
+                                class="btn btn-outline-primary" >Invitar a personas</button>
+                        </div>
+
+
+                        <br><br>
+
+                        <!-- tabla de los integrantes -->
+
+                        <table v-if="view && pos" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Correo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="p in personas">
+                                    <td>{{p.fname}} {{p.lname}}</td>
+                                    <td>{{p.email}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
 
                 </div>
+
                 <div class="card todo bg-light" id="crearT" style="display: none;">
-                    <br>
+
                     <h5>Crear To-Do</h5>
                     <div class="card-body">
                         <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
@@ -168,12 +309,12 @@
                             <div class="col-4">
                                 <label for="start">Fecha:</label>
 
-                                <input type="date" id="fechalimite" name="trip-start" value="2020-10-29" min="2020-10-25"
-                                    max="3000-12-31">
+                                <input type="date" id="fechalimite" name="trip-start" value="2020-10-29"
+                                    min="2020-10-25" max="3000-12-31">
                             </div>
                             <div class="col-3">
-                                <button id="Creartodo" type="button" class="btn btn-primary">Crear Todo</button>   
-                                <button id="cancelartodo" type="button" class="btn btn-danger">Cancelar</button> 
+                                <button id="Creartodo" type="button" class="btn btn-primary">Crear Todo</button>
+                                <button id="cancelartodo" type="button" class="btn btn-danger">Cancelar</button>
                             </div>
                         </div>
 
@@ -185,53 +326,14 @@
                 </div>
 
                 <br>
-                <div id="Todos">
-                    <!-- Aca van todos los Todos -->
+                <div id="LTodos">
 
-                    <!-- <div id="to-do_n">
-                        <div class="card bg-light mb-3 " style="max-width: 50rem; left: 15%;">
-                            <div class="card-header">
-                                <div class="row">
-                                    <div class="col-1">
-                                        <div class="custom-control custom-checkbox" id="check" style="width: 70%;">
-                                            <input type="checkbox" class="custom-control-input" id="customCheckN">
-                                            <label class="custom-control-label" for="customCheckN"></label></div>
-                                    </div>
-                                    <div class="col-10">
-                                        <h4 id="tituloN"><b> Titulo del To-Do</b></h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <h4 id="FechaN">Fecha</h4>
-                                <p id="desN" class="card-text">Descripcion del To-Do</p><br>
-                                <div id="deleteN" class=" material-icons puntero">delete</div>
-                                <div id="abrircomentN" class=" material-icons puntero">comment</div>
-                            </div>
+                    <div id="Todos" v-if="misT">
+                        <!-- Aca van todos los Todos -->
+                        <h1>Prueba</h1>
 
-
-
-                            <div class="input-group" id="inComentariosN"
-                                style="max-width: 45rem;left: 6%; display: none;">
-                                <input ID="inputcomentarioN" type="text" class="form-control"
-                                    placeholder="Ingresa tu comentario">
-                                <span class="input-group-btn"><button id="eComentN" class="btn btn-light" type="button">
-                                        <div class="material-icons" style>send</div>
-                                        <button id="cancComentN" class="btn btn-light" type="button">
-                                            <div class="material-icons">cancel</div>
-                                        </button></span></div>
-                        </div> -->
-                    <!-- <div id="ComentariosNss">
-                            <div class="card" style="width: 30rem;left:15%;display: none;">
-                                <div class="card-body">
-                                    <h5 class="card-title">Comentario</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the bulk of the card's content.</p>
-                                </div>
-                            </div>
-                        </div> -->
+                    </div>
                 </div>
-
                 <!-- fin de un todo -->
         </div>
     </div>
@@ -245,9 +347,9 @@
     <!-- final de pagina principal -->
 
 
-
     <script src="js/main.js" type="text/javascript"></Script>
     <script src="js/peticiones.js" type="text/javascript"></Script>
+    <script src="js/mainVue.js" type="text/javascript"></Script>
 </body>
 
 </html>
