@@ -139,7 +139,7 @@
                             <div id="Menu">
                                 <div>
 
-                                    <a id="seccionTodo" @click="MostrarEquipo('Mis To-Do')" class="sNav" href="#">
+                                    <a id="seccionTodo" @click="MostrarEquipo('Mis To-Do',null,null)" class="sNav" href="#">
                                         <div class="material-icons">folder</div> Mis To-Do
                                     </a>
                                 </div>
@@ -162,7 +162,7 @@
 
                                 <div v-if="seen">
                                     <div v-for="e in equipo" class="Cequipos">
-                                        <span href="#" @click="MostrarEquipo(e.name,e._id)"
+                                        <span href="#" @click="MostrarEquipo(e.name,e._id,e.code)"
                                             v-bind:title="e.desc">
                                             <label class="material-icons">
                                                 arrow_right_alt
@@ -267,8 +267,11 @@
                                 class="btn btn-outline-primary">To-Dos del equipo</button>
                             <button v-on:click="cambiarEstado(true)" type="button"
                                 class="btn btn-outline-primary">Colaboradores del equipo</button>
-
+                                <button v-on:click="mostrarCod()" type="button"
+                                class="btn btn-outline-primary" >Invitar a personas</button>
                         </div>
+
+
                         <br><br>
 
                         <!-- tabla de los integrantes -->

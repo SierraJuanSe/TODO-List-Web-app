@@ -33,7 +33,7 @@ async function enviarEquipo(nombre, desc) {
     if (result) {
       modalE.estadoerror = false;
       modalE.toggle = 3;
-      modalE.codigoEquipo=result.code;
+      modalE.codigoEquipo = result.code;
       Menu.equipo.push(result);
       modalE.nomE = "";
       modalE.desE = "";
@@ -52,7 +52,7 @@ async function enviarEquipo(nombre, desc) {
 async function enviarUnion(codigo) {
   if (codigo) {
     var result = await UnirEquipo(codigo);
-    if (result) {   
+    if (result) {
       modalE.estadoerror = false;
       swal("Muy bien", "Te acabas de unir a un equipo de trabajo", "success");
       $('#CrearGrupo').modal('hide');
@@ -76,26 +76,28 @@ var Menu = new Vue({
     // datos del objeto
     equipo: [],
     seen: false,
-    idEquipoSel: null
+    idEquipoSel: null,
+    codEquiposel: null
   }, methods: {
-    MostrarEquipo: async function (Titulo, id) {
+    MostrarEquipo: async function (Titulo, id, cod) {
 
       console.log(this.idEquipoSel)
       if (Titulo == "Mis To-Do") {
-        this.idEquipoSel=null;
+        this.idEquipoSel = null;
         MenuEquipo.view = false;
         tittle.titulo = Titulo;
         consultarTodo();
       } else {
-        this.idEquipoSel=id;
+        this.codEquiposel = cod;
+        this.idEquipoSel = id;
         tittle.titulo = Titulo;
         MenuEquipo.view = true;
         MenuEquipo.pos = false;
-        MenuEquipo.personas=[];
-        result= await consultarTodosEquipos(this.idEquipoSel);
-        if(!result){
-        console.log("El Equipo no tiene ToDos")
-        }else if(result==-1){
+        MenuEquipo.personas = [];
+        result = await consultarTodosEquipos(this.idEquipoSel);
+        if (!result) {
+          console.log("El Equipo no tiene ToDos")
+        } else if (result == -1) {
           console.log("Error al consultar los Todos de un equipo")
         }
         // var consultaIntegrantes = await consultarIntegrantesEquipos(this.idEquipoSel);
@@ -107,8 +109,8 @@ var Menu = new Vue({
         // }
       }
     },
-    mostrarEquipos: async function(){
-      this.equipo= await consultarEquipos()
+    mostrarEquipos: async function () {
+      this.equipo = await consultarEquipos()
     }
   }
 
@@ -133,16 +135,16 @@ var MenuEquipo = new Vue({
   }, methods: {
     cambiarEstado: async function (estado) {
       this.pos = estado;
-if(estado){
-  var consultaIntegrantes = await consultarIntegrantesEquipos(Menu.idEquipoSel);
-  if (consultaIntegrantes) {
-    this.personas=consultaIntegrantes;
-  } else {
-    swal("Error", "Itentalo nuevamente mas tarde", "error");
-  }
-}else{
-  console.log("Todod Del queipo")
-}
+      if (estado) {
+        var consultaIntegrantes = await consultarIntegrantesEquipos(Menu.idEquipoSel);
+        if (consultaIntegrantes) {
+          this.personas = consultaIntegrantes;
+        } else {
+          swal("Error", "Itentalo nuevamente mas tarde", "error");
+        }
+      } else {
+        console.log("Todod Del queipo")
+      }
 
       //  if(estado){
       //   TodosPintados.misT=false;
@@ -153,6 +155,9 @@ if(estado){
 
       //  console.log(TodosPintados.misT+"  "+this.pos)
 
+    },
+    mostrarCod:function(){
+      swal("Codigo: "+Menu.codEquiposel);
     }
   }
 });
