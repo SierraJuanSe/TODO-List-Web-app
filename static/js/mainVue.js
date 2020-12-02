@@ -1,5 +1,4 @@
 // Se crea el objeto de Vue para el modal
-inTeam = false;
 var modalE = new Vue({
   el: '#modalCrearE',
   data: {
@@ -34,12 +33,8 @@ async function enviarEquipo(nombre, desc) {
     if (result) {
       modalE.estadoerror = false;
       modalE.toggle = 3;
-      var equi = {
-        "id": "1234",
-        "nombre": nombre,
-        "descripcion": desc
-      }
-      Menu.equipo.push(equi);
+      modalE.codigoEquipo=result.code;
+      Menu.equipo.push(result);
       modalE.nomE = "";
       modalE.desE = "";
     } else {
@@ -57,10 +52,11 @@ async function enviarEquipo(nombre, desc) {
 async function enviarUnion(codigo) {
   if (codigo) {
     var result = await UnirEquipo(codigo);
-    if (result) {
+    if (result) {   
       modalE.estadoerror = false;
       swal("Muy bien", "Te acabas de unir a un equipo de trabajo", "success");
       $('#CrearGrupo').modal('hide');
+      Menu.equipo.push(result);
       modalE.codE = "";
       modalE.toggle = 0;
     } else {
@@ -78,28 +74,41 @@ var Menu = new Vue({
   el: '#Menu',
   data: {
     // datos del objeto
-    equipo: [{ "id": "4234", "nombre": "Todo-List", "descripcion": "Es un proyecto que funciona para que organices tus tareas" },
-    { "id": "411222", "nombre": "Python-Covid", "descripcion": "Es un proyecto que funciona para ver estadisticas del covid" }],
+    equipo: [],
     seen: false,
-    idEquipoSel: 0
+    idEquipoSel: null
   }, methods: {
     MostrarEquipo: async function (Titulo, id) {
-      inTeam = true;
-      this.idEquipoSel=id;
+
+      console.log(this.idEquipoSel)
       if (Titulo == "Mis To-Do") {
+        this.idEquipoSel=null;
         MenuEquipo.view = false;
         tittle.titulo = Titulo;
-        inTeam=false;
         consultarTodo();
       } else {
-        var consultaEquipos = await consultarInfoEquipos(id);
-        if (consultaEquipos) {
-          tittle.titulo = Titulo;
-          MenuEquipo.view = true;
-        } else {
-          swal("Error", "Itentalo nuevamente mas tarde", "error");
+        this.idEquipoSel=id;
+        tittle.titulo = Titulo;
+        MenuEquipo.view = true;
+        MenuEquipo.pos = false;
+        MenuEquipo.personas=[];
+        result= await consultarTodosEquipos(this.idEquipoSel);
+        if(!result){
+        console.log("El Equipo no tiene ToDos")
+        }else if(result==-1){
+          console.log("Error al consultar los Todos de un equipo")
         }
+        // var consultaIntegrantes = await consultarIntegrantesEquipos(this.idEquipoSel);
+        // if (consultaIntegrantes) {
+        //   tittle.titulo = Titulo;
+        //   MenuEquipo.view = true;
+        // } else {
+        //   swal("Error", "Itentalo nuevamente mas tarde", "error");
+        // }
       }
+    },
+    mostrarEquipos: async function(){
+      this.equipo= await consultarEquipos()
     }
   }
 
@@ -107,7 +116,7 @@ var Menu = new Vue({
 
 // Objeto para mostrara y ocultar los todos
 var TodosPintados = new Vue({
-  el: '.LTodos',
+  el: '#LTodos',
   data: {
     misT: true,
     crearT: false
@@ -120,12 +129,21 @@ var MenuEquipo = new Vue({
   data: {
     pos: false,
     view: false,
-    personas: [{ "nombre": "Juan", "apellido": "Sierra", "correo": "Juan@hptmail.com" },
-    { "nombre": "Felipe", "apellido": "Velasquez", "correo": "Juan*@hptmail.com" },
-    { "nombre": "Camilo", "apellido": "AAAA", "correo": "Juan123@hptmail.com" }]
+    personas: []
   }, methods: {
-    cambiarEstado: function (estado) {
+    cambiarEstado: async function (estado) {
       this.pos = estado;
+if(estado){
+  var consultaIntegrantes = await consultarIntegrantesEquipos(Menu.idEquipoSel);
+  if (consultaIntegrantes) {
+    this.personas=consultaIntegrantes;
+  } else {
+    swal("Error", "Itentalo nuevamente mas tarde", "error");
+  }
+}else{
+  console.log("Todod Del queipo")
+}
+
       //  if(estado){
       //   TodosPintados.misT=false;
       //  }else{

@@ -162,10 +162,11 @@
 
                                 <div v-if="seen">
                                     <div v-for="e in equipo" class="Cequipos">
-                                        <span href="#" @click="MostrarEquipo(e.nombre,e.id)"  v-bind:title="e.descripcion">
+                                        <span href="#" @click="MostrarEquipo(e.name,e._id)"
+                                            v-bind:title="e.desc">
                                             <label class="material-icons">
                                                 arrow_right_alt
-                                            </label>{{e.nombre}}
+                                            </label>{{e.name}}
                                         </span>
                                     </div>
                                 </div>
@@ -253,7 +254,7 @@
                         {{titulo}}
                     </div>
                 </h1>
-                <button  type="button" id="botonCrearTodo" class="btn btn-link">
+                <button type="button" id="botonCrearTodo" class="btn btn-link">
                     <h3>
                         <div class="material-icons">add_circle</div> Crear To-Do
                     </h3>
@@ -261,15 +262,17 @@
 
                 <div id="nuevot">
                     <div id="MenuEquipo">
-                    <div v-if="view" style="width: 80%;" class="btn-group" role="group" aria-label="Basic example">
-                        <button v-on:click="cambiarEstado(false)" type="button" class="btn btn-outline-primary">To-Dos del equipo</button>
-                        <button  v-on:click="cambiarEstado(true)" type="button" class="btn btn-outline-primary">Colaboradores del equipo</button>
+                        <div v-if="view" style="width: 80%;" class="btn-group" role="group" aria-label="Basic example">
+                            <button v-on:click="cambiarEstado(false)" type="button"
+                                class="btn btn-outline-primary">To-Dos del equipo</button>
+                            <button v-on:click="cambiarEstado(true)" type="button"
+                                class="btn btn-outline-primary">Colaboradores del equipo</button>
 
-                    </div>
-                    <br><br>
+                        </div>
+                        <br><br>
 
-                    <!-- tabla de los integrantes -->
-            
+                        <!-- tabla de los integrantes -->
+
                         <table v-if="view && pos" class="table table-striped">
                             <thead>
                                 <tr>
@@ -279,8 +282,8 @@
                             </thead>
                             <tbody>
                                 <tr v-for="p in personas">
-                                    <td>{{p.nombre}} {{p.apellido}}</td>
-                                    <td>{{p.correo}}</td>
+                                    <td>{{p.fname}} {{p.lname}}</td>
+                                    <td>{{p.email}}</td>
                                 </tr>
 
                             </tbody>
@@ -289,9 +292,9 @@
 
 
                 </div>
-                
+
                 <div class="card todo bg-light" id="crearT" style="display: none;">
-             
+
                     <h5>Crear To-Do</h5>
                     <div class="card-body">
                         <input class="form-control" id="titulo" type="text" placeholder="Titulo del To-do">
@@ -320,13 +323,14 @@
                 </div>
 
                 <br>
-                <div class="LTodos" v-if="misT">
-                <h1>Prueba</h1>
-                <div id="Todos"  > 
-                    <!-- Aca van todos los Todos -->
-                    
+                <div id="LTodos">
+
+                    <div id="Todos" v-if="misT">
+                        <!-- Aca van todos los Todos -->
+                        <h1>Prueba</h1>
+
+                    </div>
                 </div>
-            </div>
                 <!-- fin de un todo -->
         </div>
     </div>

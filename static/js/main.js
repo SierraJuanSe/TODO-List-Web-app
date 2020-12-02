@@ -85,6 +85,7 @@ async function enviarLogin(correo, contraseña) {
     var result = await login(correo, contraseña);
     if (result) {
         consultarTodo();
+        Menu.mostrarEquipos();
         mostrarPaginaPrincipal();
         pintarNombre(result.nombre, result.apellido);
     } else {
@@ -144,11 +145,8 @@ async function enviarTODO(titulo, des, Fecha) {
     } else {
         var d = new Date();
         FechaCreacion = (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
-        if(!inTeam){
-            var result = await crearTodo(titulo, des, Fecha,FechaCreacion);
-        }else{
-            var result = await crearTodoEquipo(Menu.idEquipoSel,titulo, des, Fecha,FechaCreacion);
-        }
+// console.log(MenuEquipo.idEquipoSel)
+            var result = await crearTodo(Menu.idEquipoSel,titulo, des, Fecha,FechaCreacion);
         if (result) {
             $('#nuevot').show(700);
             $("#crearT").hide(700);
@@ -171,7 +169,6 @@ $("#cancelartodo").click(function () {
 
 //Actualiza los ToDo que estan en la base de datos
 $("#seccionTodo").click(function () {
-    inTeam=false;
 consultarTodo();
 });
 
@@ -305,7 +302,7 @@ function botonBorrar(id) {
                     if (result) {
                         $("#" + id).hide();
                     } else {
-                        swal("El To-Do no se pudo borrar", { icon: "error", });
+                        swal("No tienes acceso para borrar el ToDo seleccionado", { icon: "error", });
                     }
                 }
             });
